@@ -18,8 +18,8 @@ async function startServer() {
 
 	// Rate Limiting to Prevent Brute-Force Attacks
 	const loginLimiter = rateLimit({
-		windowMs: 15 * 60 * 1000, // 15 minutes (for now)
-		max: 100, // Limit each IP to 100 login requests per windowMs
+		windowMs: process.env.RATE_LIMIT * 60 * 1000, // 15 minutes (for now)
+		max: process.env.NUM_ATTEMPTS, // Limit each IP to 100 login requests per windowMs
 		message: "Bruh, too many login attempts from this IP. Chillax."
 	});
 	app.use('/login', loginLimiter);

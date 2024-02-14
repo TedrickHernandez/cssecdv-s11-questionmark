@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
 );
 
 sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.');
+    console.log('Connection database has been established successfully.');
 }).catch((error) => {
     console.error('Unable to connect to the database: ', error);
 });
@@ -40,14 +40,13 @@ const usersController = {
                 number: newUser.number,
                 photo: newUser.photo
             });
-            res.status(201);
+            res.sendStatus(201);
             console.log(`email ${newUser.email} registered successfully`);
         }).catch(error => {
             console.error('SQLError: ' + error.parent['sqlMessage']);
             console.error("Failed to add user: " + newUser.email);
-            res.status(400);
+            res.sendStatus(400);
         });
-        res.send('');
     },
     verifyUser: async (req, res) => {
         const user = req.body;
@@ -58,19 +57,19 @@ const usersController = {
         }).then(hash => {
             if (hash == null) {
                 console.log(`${user.email} does not exist`);
-                res.status(404)
+                res.sendStatus(404)
             } else if (compareHash(user.password, hash['password'])) {
                 console.log(`${user.email} logged in`);
                 res.status(200);
+                res.redirect('/');
             } else {
                 console.log(`${user.email} wrong password`);
-                res.status(401);
+                res.sendStatus(401);
             }
         }).catch(error => {
-            console.error(error);
-            res.status(500);
+            console.error(error.message);
+            res.sendStatus(500);
         });
-        res.send('')
     }
 }
 

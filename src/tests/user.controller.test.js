@@ -23,14 +23,14 @@ test('user creates account with email already in use', async () => {
         first_name: 'stan',
         last_name: 'desu',
         email: 'desustan@email.com',
-        password: '0123456789abcdef',
+        password: defaultPassword,
         number: '0917 123 4567'
     }
     const newUser2 = {
         first_name: 'stan',
         last_name: 'used',
         email: 'desustan@email.com',
-        password: '01236789bcdef',
+        password: defaultPassword,
         number: '0917 123 4567'
     }
     const createUser1 = await request(baseURL).post('/api/createUser').send(newUser1);
@@ -41,7 +41,7 @@ test('user creates account with email already in use', async () => {
 
 test('user verifies with correct email and password', async () => {
     const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: defaultEmail, password: defaultPassword });
-    expect(verifyUser.statusCode).toBe(200)
+    expect(verifyUser.statusCode).toBe(302)
 })
 
 test('user verifies with correct email but wrong password', async () => {

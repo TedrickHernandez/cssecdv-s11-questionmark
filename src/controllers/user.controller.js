@@ -8,7 +8,8 @@ const sequelize = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: process.env.DB_ADDRESS,
-        dialect: 'mysql'
+        dialect: 'mysql',
+        logging: false
     }
 );
 
@@ -59,7 +60,7 @@ const usersController = {
                 console.log(`${user.email} does not exist`);
                 res.status(404)
             } else if (compareHash(user.password, hash['password'])) {
-                console.log(`${user.email} logged ina`);
+                console.log(`${user.email} logged in`);
                 res.status(200);
             } else {
                 console.log(`${user.email} wrong password`);

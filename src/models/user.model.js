@@ -1,5 +1,5 @@
 require('dotenv/config')
-const {Sequelize, DataTypes} = require("sequelize");
+const {Sequelize, DataTypes} = require('sequelize');
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -17,7 +17,7 @@ sequelize.authenticate().then(() => {
     console.error('Unable to connect to the database: ', error);
 });
 
-const User = sequelize.define("users", {
+const User = sequelize.define('users', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
@@ -35,7 +35,8 @@ const User = sequelize.define("users", {
     },
     email: {
         type: DataTypes.STRING(320),
-        allowNull: false
+        allowNull: false,
+        unique: true,
     },
     password: {
         type: DataTypes.STRING,

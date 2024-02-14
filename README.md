@@ -14,29 +14,25 @@ CSSECDV Machine Project: Milestone 1 by Group Question Mark (Cross-section)
 
 To run this project, you will need to add the following environment variables to your .env file
 
-### Startup
+```
+# Startup
+PORT = 3000 # change if conflict
 
-`PORT`
+# Rate Limiting
+RATE_LIMIT = 15 # timeout in minutes, can change
+NUM_ATTEMPS = 10 # can change
 
-### Rate Limiting
+# MySQL Credentials # set per deployment
+DB_SCHEMA = 
+DB_USERNAME = 
+DB_PASSWORD = 
+DB_ADDRESS = 
+```
+#### ^^^ MAKE SURE SPECIFIED DATABASE USER HAS ONLY THE REQUIRED PRIVILEGES ^^^
 
-`RATE_LIMIT`
-
-`NUM_ATTEMPTS`
-
-### MySQL Credentials
-
-`DB_SCHEMA`
-
-`DB_USERNAME`
-
-`DB_PASSWORD`
-
-`DB_ADDRESS`
-
-#### ^^^ MAKE SURE THIS DATABASE USER HAS ONLY THE REQUIRED PRIVILEGES ^^^
-
- * `GRANT SELECT, INSERT, UPDATE on [SCHEMA].[TABLE] to [USER]@localhost`
+```sql
+GRANT SELECT, INSERT, UPDATE on [SCHEMA].users to [USER]@localhost
+```
 
 ## Installation
 
@@ -44,6 +40,22 @@ Install the project with npm
 
 ```bash
   npm install
+```
+
+Create the database with MySQL
+```sql
+CREATE TABLE `users` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `first_name` varchar(255) NOT NULL,
+    `last_name` varchar(255) NOT NULL,
+    `email` varchar(320) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `number` varchar(255) NOT NULL,
+    `photo` blob
+PRIMARY KEY (`id`),
+UNIQUE KEY `id` (`id`),
+UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ```
 
 ## Deployment

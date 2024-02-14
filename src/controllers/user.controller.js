@@ -1,6 +1,6 @@
-const User = require('../models/user.model')
+const User = require('../models/user.model');
 const { Sequelize } = require('sequelize');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -26,7 +26,7 @@ const usersController = {
          * (^^ maybe allow period for Jr. Sr. force users to do III)
          * ensure photo is a photo (png, jpg, tiff?, bmp?)
          */
-        const newUser = req.body
+        const newUser = req.body;
 
         newUser.password = generateHash(newUser.password);
 
@@ -39,7 +39,7 @@ const usersController = {
                 number: newUser.number,
                 photo: newUser.photo
             });
-            res.status(201)
+            res.status(201);
             console.log(`email ${newUser.email} registered successfully`);
         }).catch((error) => {
             console.error(error);

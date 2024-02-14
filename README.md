@@ -1,5 +1,7 @@
 # CSSECDV-S11-QuestionMark
+
 CSSECDV Machine Project: Milestone 1 by Group Question Mark (Cross-section)
+
 ## Authors
 
 - [S11 HERNANDEZ, Tedrick James](https://github.com/TedrickHernandez)
@@ -13,14 +15,17 @@ CSSECDV Machine Project: Milestone 1 by Group Question Mark (Cross-section)
 To run this project, you will need to add the following environment variables to your .env file
 
 ### Startup
+
 `PORT`
 
 ### Rate Limiting
+
 `RATE_LIMIT`
 
 `NUM_ATTEMPTS`
 
 ### MySQL Credentials
+
 `DB_SCHEMA`
 
 `DB_USERNAME`
@@ -28,14 +33,26 @@ To run this project, you will need to add the following environment variables to
 `DB_PASSWORD`
 
 `DB_ADDRESS`
+
 #### ^^^ MAKE SURE THIS DATABASE USER HAS ONLY THE REQUIRED PRIVILEGES ^^^
+
  * `GRANT SELECT, INSERT, UPDATE on [SCHEMA].[TABLE] to [USER]@localhost`
+
+## Installation
+
+Install the project with npm
+
+```bash
+  npm install
+```
+
 ## Deployment
 
 To deploy this project:
- * Make sure MySQL database is running on system
- * run `npm install` to build
- * run ```npm start```
+```bash
+  npm start
+```
+
 ## Running Tests
 
 To run tests, run the following command

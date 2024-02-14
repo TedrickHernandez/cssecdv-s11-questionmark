@@ -23,8 +23,8 @@ const usersController = {
         /**TODO
          * validation for email and password
          * validation for first and last name to be only characters..?
-         * (^^ maybe allow period for Jr. Sr. force users to do III)
-         * ensure photo is a photo (png, jpg, tiff?, bmp?)
+         * (^^ maybe allow period for Jr. Sr.)
+         * ensure photo is a photo (png, jpg, jpeg, tiff?, bmp?)
          */
         const newUser = req.body;
 

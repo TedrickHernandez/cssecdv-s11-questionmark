@@ -1,7 +1,5 @@
 require('dotenv/config')
-const sequelizeModule = require('sequelize');
-const Sequelize = sequelizeModule.Sequelize;
-const DataTypes = sequelizeModule.DataTypes
+const {Sequelize, DataTypes} = require("sequelize");
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -57,3 +55,5 @@ sequelize.sync().then(() => {
 }).catch((error) => {
     console.error('Unable to sync \'users\' table: ', error);
 });
+
+module.exports = User;

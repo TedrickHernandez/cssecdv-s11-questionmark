@@ -5,6 +5,7 @@ async function startServer() {
 	const bcrypt = require('bcrypt'); // For hashing passwords
 	const rateLimit = require('express-rate-limit'); // For rate-limiting to prevent brute-forcing
 	const router = require('./src/routes/router');
+	const userRouter = require('./src/routes/user.router');
 
 	const app = express();
 	const port = process.env.PORT;
@@ -26,6 +27,7 @@ async function startServer() {
 	app.use('/login', loginLimiter);
 
 	app.use(router)
+	app.use('/api', userRouter)
 
 	app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 

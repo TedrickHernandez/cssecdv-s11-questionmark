@@ -4,8 +4,8 @@ CSSECDV Machine Project: Milestone 1 by Group Question Mark (Cross-section)
 
 - [S11 HERNANDEZ, Tedrick James](https://github.com/TedrickHernandez)
 - [S12 DESUCATAN, Cristan Daniel](https://github.com/dot-nemo)
-- [S12 ALEGRE, Alastair Pearce](https://github.com/TedrickHernandez)
-- [S12 MULDONG, Jericho Luis](https://github.com/TedrickHernandez)
+- [S12 ALEGRE, Alastair Pearce](https://github.com/Arboribustree)
+- [S12 MULDONG, Jericho Luis](https://github.com/Jeric3)
 
 
 ## Environment Variables

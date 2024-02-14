@@ -28,10 +28,7 @@ const usersController = {
          */
         const newUser = req.body
 
-        const salt = bcrypt.genSaltSync(12);
-        const hash = bcrypt.hashSync(newUser.password, salt);
-
-        newUser.password = hash.toString()
+        newUser.password = generateHash(newUser.password);
 
         await sequelize.sync().then(async () => {
             await User.create({
@@ -52,4 +49,8 @@ const usersController = {
     }
 }
 
-module.exports = usersController
+function generateHash(password) {
+    const salt = bcrypt.genSaltSync(12);
+    const hash = bcrypt.hashSync(password, salt);
+    return hash.toString();
+}

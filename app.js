@@ -10,7 +10,7 @@ async function startServer() {
 	const port = process.env.PORT;
 
 	// Serve static files from the 'public' directory
-	app.use(express.static('public'));
+	app.use('/static', express.static('public'));
 	// Parse URL-encoded bodies (as sent by HTML forms)
 	app.use(express.urlencoded({ extended: true }));
 	// Parse JSON bodies

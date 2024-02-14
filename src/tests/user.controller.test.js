@@ -38,3 +38,18 @@ test('user creates account with email already in use', async () => {
     const createUser2 = await request(baseURL).post('/api/createUser').send(newUser2);
     expect(createUser2.statusCode).toBe(400);
 });
+
+test('user verifies with correct email and password', async () => {
+    const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: defaultEmail, password: defaultPassword });
+    expect(verifyUser.statusCode).toBe(200)
+})
+
+test('user verifies with correct email but wrong password', async () => {
+    const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: defaultEmail, password: 'defaultPassword' });
+    expect(verifyUser.statusCode).toBe(401)
+})
+
+test('user verifies with email not in db', async () => {
+    const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: 'defaultEmail@email.com', password: 'defaultPassword' });
+    expect(verifyUser.statusCode).toBe(404)
+})

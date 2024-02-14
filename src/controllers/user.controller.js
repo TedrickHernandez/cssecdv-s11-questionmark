@@ -41,9 +41,33 @@ const usersController = {
             });
             res.status(201);
             console.log(`email ${newUser.email} registered successfully`);
-        }).catch((error) => {
+        }).catch(error => {
+            console.error('SQLError: ' + error.parent['sqlMessage']);
+            console.error("Failed to add user: " + newUser.email);
+            res.status(400);
+        });
+        res.send('');
+    },
+    verifyUser: async (req, res) => {
+        const user = req.body;
+        console.log(`attempted login on ${user.email}`)
+        await User.findOne({
+            attributes: { include: ['password'] },
+            where: { email: user.email }
+        }).then(hash => {
+            if (hash == null) {
+                console.log(`${user.email} does not exist`);
+                res.status(404)
+            } else if (compareHash(user.password, hash['password'])) {
+                console.log(`${user.email} logged ina`);
+                res.status(200);
+            } else {
+                console.log(`${user.email} wrong password`);
+                res.status(401);
+            }
+        }).catch(error => {
             console.error(error);
-            res.status(400)
+            res.status(500);
         });
         res.send('')
     }
@@ -54,3 +78,9 @@ function generateHash(password) {
     const hash = bcrypt.hashSync(password, salt);
     return hash.toString();
 }
+
+function compareHash(password, hash) {
+    return bcrypt.compareSync(password, hash);
+}
+
+module.exports = usersController;

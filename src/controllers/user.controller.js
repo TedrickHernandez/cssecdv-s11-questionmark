@@ -20,6 +20,7 @@ sequelize.authenticate().then(() => {
 });
 
 const usersController = {
+    // /register
     createUser: async (req, res) => {
         /**TODO
          * validation for email and password
@@ -48,6 +49,7 @@ const usersController = {
             res.sendStatus(400);
         });
     },
+    // /login
     verifyUser: async (req, res) => {
         const user = req.body;
         console.log(`attempted login on ${user.email}`)

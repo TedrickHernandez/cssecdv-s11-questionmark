@@ -1,8 +1,9 @@
 const User = require('../models/user.model');
-const { Sequelize } = require('sequelize');
+const { Sequelize, TIME } = require('sequelize');
 const bcrypt = require('bcrypt');
+const createSession = require('./session.controller').createSession;
+const rolesController = require('./role.controller');
 const fs = require('fs')
-
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -16,9 +17,9 @@ const sequelize = new Sequelize(
 );
 
 sequelize.authenticate().then(() => {
-    console.log('Connection database has been established successfully.');
+    console.log('Connection Users has been established successfully.');
 }).catch((error) => {
-    console.error('Unable to connect to the database: ', error);
+    console.error('Unable to connect to the Users: ', error);
 });
 
 const usersController = {
@@ -66,14 +67,16 @@ const usersController = {
         await User.findOne({
             attributes: { include: ['password'] },
             where: { email: user.email }
-        }).then(hash => {
-            if (hash == null) {
+        }).then(async foundUser => {
+            if (!foundUser) {
                 console.log(`${user.email} does not exist`);
                 res.sendStatus(404)
-            } else if (compareHash(user.password, hash['password'])) {
+            } else if (compareHash(user.password, foundUser['password'])) {
                 console.log(`${user.email} logged in`);
-                res.status(200);
-                res.redirect('/');
+                await createSession(req.sessionID, user.email, req.session.cookie._expires)
+                req.session.email = user.email
+                if (await rolesController.isAdmin(user.email)) res.redirect('/admin')
+                else res.redirect('/');
             } else {
                 console.log(`${user.email} wrong password`);
                 res.sendStatus(401);

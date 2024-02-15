@@ -1,3 +1,5 @@
+const { verifySession } = require('./src/controllers/session.controller');
+
 async function startServer() {
 	require('dotenv').config();
 	const express = require('express');
@@ -6,6 +8,7 @@ async function startServer() {
 	const rateLimit = require('express-rate-limit'); // For rate-limiting to prevent brute-forcing
 	const router = require('./src/routes/router');
 	const userRouter = require('./src/routes/user.router');
+	const session = require('express-session');
 	const bodyParser = require('body-parser')
 
 	const app = express();
@@ -16,14 +19,25 @@ async function startServer() {
 	// Parse URL-encoded bodies (as sent by HTML forms)
 	app.use(bodyParser.urlencoded({ extended: true }));
 
+	app.use(session({
+		secret: '3xTR3m3lY S3cUre 53cR37',
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			maxAge: 60 * 60 * 1000 // 1 hr (for now)
+		}
+	}))
+
+	app.use(verifySession)
+
 	// Rate Limiting to Prevent Brute-Force Attacks
-	const loginLimiter = rateLimit({
+	const apiLimiter = rateLimit({
 		windowMs: process.env.RATE_LIMIT * 60 * 1000, // 15 minutes (for now)
 		max: process.env.NUM_ATTEMPTS, // Limit each IP to 100 login requests per windowMs
-		message: "Bruh, too many login attempts from this IP. Chillax."
+		message: "Bruh, too many api calls from this IP. Chillax."
 	});
 
-	app.use('/login', loginLimiter);
+	app.use('/api', apiLimiter);
 
 	app.use(router)
 	app.use('/api', userRouter)

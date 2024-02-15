@@ -1,7 +1,7 @@
 const { verifySession } = require('./src/controllers/session.controller');
 
 async function startServer() {
-	require('dotenv/config');
+	require('dotenv').config();
 	const express = require('express');
 	// const multer = require('multer'); // For handling file uploads (tentative)
 	const bcrypt = require('bcrypt'); // For hashing passwords
@@ -9,6 +9,7 @@ async function startServer() {
 	const router = require('./src/routes/router');
 	const userRouter = require('./src/routes/user.router');
 	const session = require('express-session');
+	const bodyParser = require('body-parser')
 
 	const app = express();
 	const port = process.env.PORT;
@@ -16,9 +17,7 @@ async function startServer() {
 	// Serve static files from the 'public' directory
 	app.use('/static', express.static('public'));
 	// Parse URL-encoded bodies (as sent by HTML forms)
-	app.use(express.urlencoded({ extended: true }));
-	// Parse JSON bodies
-	app.use(express.json());
+	app.use(bodyParser.urlencoded({ extended: true }));
 
 	app.use(session({
 		secret: '3xTR3m3lY S3cUre 53cR37',

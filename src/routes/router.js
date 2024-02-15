@@ -1,7 +1,10 @@
 const Router = require('express').Router;
 const path = require('path');
 const { removeSession, verifyAdminSession } = require('../controllers/session.controller');
-
+uploadPath = 'uploads/profilePic'
+const multerConfig = require('../../utils/multerConfig')
+const multer = multerConfig(path.join('public', uploadPath))
+const usersController = require('../controllers/user.controller');
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -15,6 +18,8 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'registration.html'));
 })
+
+router.post('/register', multer.upload.single('profilePhoto'), usersController.createUser)
 
 // Logout Endpoint
 router.post('/logout', removeSession, (req, res) => {

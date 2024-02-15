@@ -1,6 +1,8 @@
 const User = require('../models/user.model');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
+const fs = require('fs')
+
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -29,22 +31,30 @@ const usersController = {
          * ensure photo is a photo (png, jpg, jpeg, tiff?, bmp?)
          */
         const newUser = req.body;
+        const fileName = req.file != null ? req.file.filename: null 
+        console.log("file: " +req.file.filename)
 
+        if(!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.phoneNumber ||!newUser.password ){
+            return res.send(400)
+        }
+
+        console.log(req)
         newUser.password = generateHash(newUser.password);
+        img = fs.read()
 
         await sequelize.sync().then(async () => {
             await User.create({
-                first_name: newUser.first_name,
-                last_name: newUser.last_name,
+                first_name: newUser.firstName,
+                last_name: newUser.lastName,
                 email: newUser.email,
                 password: newUser.password,
-                number: newUser.number,
-                photo: newUser.photo
+                number: newUser.phoneNumber,
+                photo: imgsrc
             });
             res.sendStatus(201);
             console.log(`email ${newUser.email} registered successfully`);
         }).catch(error => {
-            console.error('SQLError: ' + error.parent['sqlMessage']);
+            console.error('SQLError: ' + error.message);
             console.error("Failed to add user: " + newUser.email);
             res.sendStatus(400);
         });

@@ -18,7 +18,7 @@ test('user creates account with valid information provided and no photo', async 
     expect(createUser.statusCode).toBe(201)
 });
 
-test('user creates account with email already in use', async () => {
+test('user creates account w/o photo but email already in use', async () => {
     const newUser1 = {
         first_name: 'stan',
         last_name: 'desu',
@@ -39,9 +39,16 @@ test('user creates account with email already in use', async () => {
     expect(createUser2.statusCode).toBe(400);
 });
 
+test('admin verifies with correct email and password', async () => {
+    const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: defaultEmail, password: defaultPassword })
+    .expect(302)
+    .expect('Location', '/admin')
+})
+
 test('user verifies with correct email and password', async () => {
-    const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: defaultEmail, password: defaultPassword });
-    expect(verifyUser.statusCode).toBe(302)
+    const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: 'desustan@email.com', password: defaultPassword })
+    .expect(302)
+    .expect('Location', '/')
 })
 
 test('user verifies with correct email but wrong password', async () => {

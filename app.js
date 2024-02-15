@@ -1,3 +1,5 @@
+const { verifySession } = require('./src/controllers/session.controller');
+
 async function startServer() {
 	require('dotenv/config');
 	const express = require('express');
@@ -6,6 +8,7 @@ async function startServer() {
 	const rateLimit = require('express-rate-limit'); // For rate-limiting to prevent brute-forcing
 	const router = require('./src/routes/router');
 	const userRouter = require('./src/routes/user.router');
+	const session = require('express-session');
 
 	const app = express();
 	const port = process.env.PORT;
@@ -16,6 +19,17 @@ async function startServer() {
 	app.use(express.urlencoded({ extended: true }));
 	// Parse JSON bodies
 	app.use(express.json());
+
+	app.use(session({
+		secret: '3xTR3m3lY S3cUre 53cR37',
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			maxAge: 60 * 60 * 1000 // 1 hr (for now)
+		}
+	}))
+
+	app.use(verifySession)
 
 	// Rate Limiting to Prevent Brute-Force Attacks
 	const loginLimiter = rateLimit({

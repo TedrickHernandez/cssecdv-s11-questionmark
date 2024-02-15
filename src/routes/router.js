@@ -1,5 +1,6 @@
 const Router = require('express').Router;
 const path = require('path');
+const { verifySession } = require('../controllers/session.controller');
 
 const router = Router();
 

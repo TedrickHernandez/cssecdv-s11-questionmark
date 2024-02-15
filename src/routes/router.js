@@ -1,7 +1,7 @@
 const Router = require('express').Router;
 const path = require('path');
 const { removeSession, verifyAdminSession } = require('../controllers/session.controller');
-uploadPath = 'uploads/profilePic'
+const uploadPath = 'uploads/profilePic'
 const multerConfig = require('../../utils/multerConfig')
 const multer = multerConfig(path.join('public', uploadPath))
 const usersController = require('../controllers/user.controller');

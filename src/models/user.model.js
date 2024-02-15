@@ -42,7 +42,7 @@ const User = sequelize.define('users', {
         allowNull: false
     },
     photo: {
-        type: DataTypes.BLOB
+        type: DataTypes.BLOB('long')
     }
 });
 

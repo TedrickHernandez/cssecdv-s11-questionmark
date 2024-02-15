@@ -23,10 +23,10 @@ RATE_LIMIT = 15 # timeout in minutes, can change
 NUM_ATTEMPS = 10 # can change
 
 # MySQL Credentials # set per deployment
-DB_SCHEMA = 
-DB_USERNAME = 
-DB_PASSWORD = 
-DB_ADDRESS = 
+DB_SCHEMA =
+DB_USERNAME =
+DB_PASSWORD =
+DB_ADDRESS =
 ```
 #### ^^^ MAKE SURE SPECIFIED DATABASE USER HAS ONLY THE REQUIRED PRIVILEGES ^^^
 
@@ -42,26 +42,13 @@ Install the project with npm
   npm install
 ```
 
-Create the database with MySQL
-```sql
-CREATE TABLE `users` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT,
-    `first_name` varchar(255) NOT NULL,
-    `last_name` varchar(255) NOT NULL,
-    `email` varchar(320) NOT NULL,
-    `password` varchar(255) NOT NULL,
-    `number` varchar(255) NOT NULL,
-    `photo` blob
-PRIMARY KEY (`id`),
-UNIQUE KEY `id` (`id`),
-UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-```
+Create the database with MySQL using the provided script
 
 ## Deployment
 
 To deploy this project:
 ```bash
+  npm i
   npm start
 ```
 

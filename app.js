@@ -18,6 +18,8 @@ async function startServer() {
 	app.use('/static', express.static('public'));
 	// Parse URL-encoded bodies (as sent by HTML forms)
 	app.use(bodyParser.urlencoded({ extended: true }));
+	app.use(bodyParser.json())
+
 
 	app.use(session({
 		secret: '3xTR3m3lY S3cUre 53cR37',

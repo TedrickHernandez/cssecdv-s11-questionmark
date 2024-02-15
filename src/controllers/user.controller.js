@@ -85,4 +85,22 @@ function compareHash(password, hash) {
     return bcrypt.compareSync(password, hash);
 }
 
+// email validation 
+function validateEmail(email) {
+    const emailRegex = /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+    return emailRegex.test(email); //RFC2822 compliant
+}
+
+// phone number validation function
+function validatePhoneNumber(phoneNumber) {
+    const phoneRegex = /^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/; // optional country code, optional special characters and whitespace
+    return phoneRegex.test(phoneNumber);
+}
+
+// test
+// const email = 'test1@example.com';
+// const phoneNumber = '+639171234567';
+// console.log(validateEmail(email));
+// console.log(validatePhoneNumber(phoneNumber));
+
 module.exports = usersController;

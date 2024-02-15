@@ -64,7 +64,8 @@ const usersController = {
                 res.sendStatus(404)
             } else if (compareHash(user.password, foundUser['password'])) {
                 console.log(`${user.email} logged in`);
-                createSession(req.sessionID, user.email, req.session.cookie._expires)
+                await createSession(req.sessionID, user.email, req.session.cookie._expires)
+                req.session.email = user.email
                 if (await rolesController.isAdmin(user.email)) res.redirect('/admin')
                 else res.redirect('/');
             } else {

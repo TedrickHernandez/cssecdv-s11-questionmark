@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 const path = require('path');
-const { verifySession } = require('../controllers/session.controller');
+const { removeSession, verifyAdminSession } = require('../controllers/session.controller');
 
 const router = Router();
 
@@ -17,12 +17,11 @@ router.get('/register', (req, res) => {
 })
 
 // Logout Endpoint
-router.post('/logout', (req, res) => {
-    // Logout logic here (terminate session and shit)
+router.post('/logout', removeSession, (req, res) => {
     res.redirect('/login'); // Redirect to login
 });
 
-router.get('/admin', (req, res) => {
+router.get('/admin', verifyAdminSession, (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'admin.html'));
 });
 

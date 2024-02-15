@@ -32,13 +32,13 @@ async function startServer() {
 	app.use(verifySession)
 
 	// Rate Limiting to Prevent Brute-Force Attacks
-	const loginLimiter = rateLimit({
+	const apiLimiter = rateLimit({
 		windowMs: process.env.RATE_LIMIT * 60 * 1000, // 15 minutes (for now)
 		max: process.env.NUM_ATTEMPTS, // Limit each IP to 100 login requests per windowMs
-		message: "Bruh, too many login attempts from this IP. Chillax."
+		message: "Bruh, too many api calls from this IP. Chillax."
 	});
 
-	app.use('/login', loginLimiter);
+	app.use('/api', apiLimiter);
 
 	app.use(router)
 	app.use('/api', userRouter)

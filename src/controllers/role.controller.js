@@ -21,6 +21,7 @@ sequelize.authenticate().then(() => {
 
 const rolesController = {
     async isAdmin(email) {
+        if (typeof email !== 'undefined' && email)
         return await Role.findOne({
             attributes: ['isAdmin'],
             where: { email: email }

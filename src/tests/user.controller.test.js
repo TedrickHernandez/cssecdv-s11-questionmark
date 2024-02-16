@@ -6,11 +6,11 @@ const baseURL = 'http://localhost:' + process.env.PORT
 const defaultEmail = 'standesu@email.com'
 const defaultPassword = '0123456789abcdef'
 const defaultUser = {
-    first_name: 'stan',
-    last_name: 'desu',
+    firstName: 'stan',
+    lastName: 'desu',
     email: defaultEmail,
     password: defaultPassword,
-    number: '0917 123 4567'
+    phoneNumber: '0917 123 4567'
 }
 
 test('user creates account with valid information provided and no photo', async () => {
@@ -18,20 +18,34 @@ test('user creates account with valid information provided and no photo', async 
     expect(createUser.statusCode).toBe(201)
 });
 
+test('user creates account with invalid email', async () => {
+    const newUser = Object.assign({}, defaultUser, {});
+    newUser.email = 'INVALID EMAIL';
+    const createUser = await request(baseURL).post('/api/createUser').send(newUser);
+    expect(createUser.statusCode).toBe(422)
+});
+
+test('user creates account with invalid number', async () => {
+    const newUser = Object.assign({}, defaultUser, {});
+    newUser.phoneNumber = 'INVALID NUMBER';
+    const createUser = await request(baseURL).post('/api/createUser').send(newUser);
+    expect(createUser.statusCode).toBe(422)
+});
+
 test('user creates account w/o photo but email already in use', async () => {
     const newUser1 = {
-        first_name: 'stan',
-        last_name: 'desu',
+        firstName: 'stan',
+        lastName: 'desu',
         email: 'desustan@email.com',
         password: defaultPassword,
-        number: '0917 123 4567'
+        phoneNumber: '0917 123 4567'
     }
     const newUser2 = {
-        first_name: 'stan',
-        last_name: 'used',
+        firstName: 'stan',
+        lastName: 'used',
         email: 'desustan@email.com',
         password: defaultPassword,
-        number: '0917 123 4567'
+        phoneNumber: '0917 123 4567'
     }
     const createUser1 = await request(baseURL).post('/api/createUser').send(newUser1);
     expect(createUser1.statusCode).toBe(201);

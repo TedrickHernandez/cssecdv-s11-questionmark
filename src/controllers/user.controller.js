@@ -33,8 +33,8 @@ const usersController = {
         const newUser = req.body;
         const fileName = req.file != null ? req.file.filename: null
 
-        if(!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.phoneNumber ||!newUser.password ){
-            return res.send(400)
+        if(!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.phoneNumber ||!newUser.password || !validateEmail(newUser.email) || !validatePhoneNumber(newUser.phoneNumber)){
+            return res.sendStatus(422)
         }
 
         newUser.password = generateHash(newUser.password);

@@ -4,8 +4,12 @@
 	<meta charset = "UTF-8">
 	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
 	<title>Registration</title>
+	<link rel = "stylesheet" href = "/static/css/styles.css">
 </head>
 <body>
+	<form action = "/home" method = "POST">
+		<button type = "submit">OnlyFriends</button>
+	</form>
 	<h2>User Registration</h2>
 	<form action = "/register" method = "POST" enctype = "multipart/form-data">
 		<div>
@@ -33,6 +37,9 @@
 			<input type = "password" id = "password" name = "password" required>
 		</div>
 		<button type = "submit">Register</button>
+	</form>
+	<form action = "/gotologin" method = "POST">
+		<button type = "submit">Already registered? Login.</button>
 	</form>
 </body>
 </html>

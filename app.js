@@ -12,7 +12,7 @@ async function startServer() {
 	const bodyParser = require('body-parser')
 
 	const app = express();
-	const port = process.env.PORT;
+	const port = process.env.PORT; // 
 
 	// Serve static files from the 'public' directory
 	app.use('/static', express.static('public'));

@@ -8,7 +8,7 @@ const usersController = require('../controllers/user.controller');
 const router = Router();
 
 router.get('/', (req, res) => {
-    res.redirect('/login');
+    res.redirect('/home');
 });
 
 router.get('/login', (req, res) => {
@@ -17,6 +17,10 @@ router.get('/login', (req, res) => {
 
 router.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'registration.html'));
+})
+
+router.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../views', 'home.html'));
 })
 
 router.post('/register', multer.upload.single('profilePhoto'), usersController.createUser)

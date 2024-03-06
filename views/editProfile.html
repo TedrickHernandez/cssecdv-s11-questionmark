@@ -14,15 +14,19 @@
 		<form action = "/saveProfile" method = "POST" enctype = "multipart/form-data">
 			<div>
 				<label for = "profilePhoto">Profile Photo:</label>
-				<input type = "file" id = "profilePhoto" name = "profilePhoto">
+				<input type = "file" id = "profilePhoto" name = "profilePhoto" accept = "image/*>
 			</div>
 			<div>
 				<label for = "name">Name:</label>
-				<input type = "text" id = "name" name = "name">
+				<input type = "text" id = "name" name = "name" required>
 			</div>
 			<div>
 				<label for = "bio">Bio:</label>
 				<textarea id = "bio" name = "bio"></textarea>
+			</div>
+			<div>
+				<label for = "phoneNumber">Phone Number:</label>
+				<input type = "tel" id = "phoneNumber" name = "phoneNumber" required>
 			</div>
 			<button type = "submit">Save</button>
 		</form>

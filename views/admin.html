@@ -11,9 +11,27 @@
 		<h3>Registered Users</h3>
 		<ul id = "userList">
 			<!-- User items will be placed here; placeholders for now -->
-			<li>User 1</li>
-			<li>User 2</li>
-			<li>User 3</li>
+			<li>
+				User 1
+				<form action = "/deleteUser" method = "POST">
+					<input type = "hidden" name = "userId" value = "1"> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+					<button type = "submit">Delete</button>
+				</form>
+			</li>
+			<li>
+				User 2
+				<form action = "/deleteUser" method = "POST">
+					<input type = "hidden" name = "userId" value = "2"> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+					<button type = "submit">Delete</button>
+				</form>
+			</li>
+			<li>
+				User 3
+				<form action = "/deleteUser" method = "POST">
+					<input type = "hidden" name = "userId" value = "3"> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+					<button type = "submit">Delete</button>
+				</form>
+			</li>
 		</ul>
 	</div>
 	<form action = "/logout" method = "POST">

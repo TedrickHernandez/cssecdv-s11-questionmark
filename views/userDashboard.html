@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+	<title>User Dashboard</title>
+	<link rel = "stylesheet" href = "/static/css/styles.css">
+</head>
+<body>
+	<form action = "/home" method = "GET"> <!-- ATTENTION; ENSURE THE SESSION PERSISTS, HOW EVER THAT WORKS -->
+		<button type = "submit">OnlyFriends</button>
+	</form>
+	<h1>Hello, RandomGuy!</h1> <!-- ATTENTION -->
+	<h2>User Dashboard</h2>
+	<div>
+		<h3>Friends</h3>
+		<ul id = "friendsList"> <!-- ATTENTION; TAKE NOTE  -->
+			<li>
+				Friend 1
+				<form action = "/viewProfile" method = "GET"> <!-- ATTENTION -->
+					<input type = "hidden" name = "userId" value = "1"> <!-- ATTENTION -->
+					<button type = "submit">Visit</button>
+				</form>
+			</li>
+			<li>
+				Friend 2
+				<form action = "/viewProfile" method = "GET"> <!-- ATTENTION -->
+					<input type = "hidden" name = "userId" value = "2"> <!-- ATTENTION -->
+					<button type = "submit">Visit</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h3>Wanna meet new people?</h3>
+		<ul id = "strangersList"> <!-- ATTENTION; TAKE NOTE  -->
+			<li>
+				Stranger 1
+				<form action = "/viewProfile" method = "GET"> <!-- ATTENTION -->
+					<input type = "hidden" name = "userId" value = "3"> <!-- ATTENTION -->
+					<button type = "submit">Visit</button>
+				</form>
+			</li>
+			<li>
+				Stranger 2
+				<form action = "/viewProfile" method = "GET"> <!-- ATTENTION -->
+					<input type = "hidden" name = "userId" value = "4"> <!-- ATTENTION -->
+					<button type = "submit">Visit</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<form action = "/viewProfile" method = "GET"> <!-- VIEW PROFILE -->
+		<button type = "submit">View Own Profile</button>
+	</form>
+	<form action = "/settings" method = "GET"> <!-- SETTINGS -->
+		<button type = "submit">Settings</button>
+	</form>
+	<form action = "/logout" method = "GET"> <!-- LOGOUT -->
+		<button type = "submit">Logout</button>
+	</form>
+</body>
+</html>

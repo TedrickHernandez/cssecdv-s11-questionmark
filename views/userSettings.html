@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		<meta charset = "UTF-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+		<title>User Settings</title>
+		<link rel = "stylesheet" href = "/static/css/styles.css">
+	</head>
+	<body>
+		<form action = "/home" method = "GET"> <!-- ATTENTION; ENSURE THE SESSION PERSISTS, HOW EVER THAT WORKS -->
+			<button type = "submit">OnlyFriends</button>
+		</form>
+		<h2>User Settings</h2>
+		<form action = "/deleteUser" method = "POST"> <!-- ATTENTION -->
+			<button type = "submit">Delete Account</button>
+		</form>
+		<form action = "/userDashboard" method = "GET">
+			<button type = "submit">Dashboard</button>
+		</form>
+	</body>
+</html>

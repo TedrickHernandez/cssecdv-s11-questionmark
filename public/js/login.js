@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', (e) => {
     let params = (new URL(document.location)).searchParams;
     let err = params.get("e");
-    if (e) {
+    if (err) {
         document.getElementById('error').innerHTML = 'Invalid credentials.'
     }
     const form = document.querySelector('#login');

@@ -83,6 +83,15 @@ div {
 	background-color: #cc0000;
 }
 
+.profile-photo {
+	display: block;
+	margin: 0 auto;
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
 input[type = "email"], input[type = "password"] {
 	display: block;
 	width: 100%;

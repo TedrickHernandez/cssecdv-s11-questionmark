@@ -47,6 +47,34 @@ label {
 	margin-bottom: 5px;
 }
 
+ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #ccc;
+	padding: 10px 0;
+}
+
+li form {
+	margin: 0;
+}
+
+li button {
+	width: auto;
+	height: auto;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+
+div {
+	padding: 0 256px;
+}
+
 .delete-button {
 	background-color: #ff0000;
 }

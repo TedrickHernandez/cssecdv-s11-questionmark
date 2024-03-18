@@ -47,6 +47,14 @@ label {
 	margin-bottom: 5px;
 }
 
+.delete-button {
+	background-color: #ff0000;
+}
+
+.delete-button:hover {
+	background-color: #cc0000;
+}
+
 input[type = "email"], input[type = "password"] {
 	display: block;
 	width: 100%;

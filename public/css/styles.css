@@ -154,3 +154,8 @@ input[type = "file"]:focus {
 	border-color: #333;
 	outline: none;
 }
+
+.error {
+	text-align: center;
+	color: red;
+}

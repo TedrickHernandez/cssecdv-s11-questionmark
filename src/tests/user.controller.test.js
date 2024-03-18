@@ -67,10 +67,12 @@ test('user verifies with correct email and password', async () => {
 
 test('user verifies with correct email but wrong password', async () => {
     const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: defaultEmail, password: 'defaultPassword' });
-    expect(verifyUser.statusCode).toBe(401)
+    expect(verifyUser.headers.location).toBe('/login?e=1')
+    expect(verifyUser.statusCode).toBe(302)
 })
 
 test('user verifies with email not in db', async () => {
     const verifyUser = await request(baseURL).post('/api/verifyUser').send({ email: 'defaultEmail@email.com', password: 'defaultPassword' });
-    expect(verifyUser.statusCode).toBe(404)
+    expect(verifyUser.headers.location).toBe('/login?e=1')
+    expect(verifyUser.statusCode).toBe(302)
 })

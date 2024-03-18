@@ -66,16 +66,19 @@ const usersController = {
         }).then(async foundUser => {
             if (!foundUser) {
                 console.log(`${user.email} does not exist`);
-                res.sendStatus(404)
+                res.redirect('/login?e=1')
             } else if (compareHash(user.password, foundUser['password'])) {
                 console.log(`${user.email} logged in`);
                 await createSession(req.sessionID, user.email, req.session.cookie._expires)
                 req.session.email = user.email
-                if (await rolesController.isAdmin(user.email)) res.redirect('/admin')
+                if (await rolesController.isAdmin(user.email)) {
+                    console.log('admin logged in');
+                    res.redirect('/admin')
+                }
                 else res.redirect('/');
             } else {
                 console.log(`${user.email} wrong password`);
-                res.sendStatus(401);
+                res.redirect('/login?e=1')
             }
         }).catch(error => {
             console.error(error.message);

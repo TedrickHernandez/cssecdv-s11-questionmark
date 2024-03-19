@@ -24,12 +24,6 @@ sequelize.authenticate().then(() => {
 const usersController = {
     // /register
     createUser: async (req, res) => {
-        /**TODO
-         * validation for email and password
-         * validation for first and last name to be only characters..?
-         * (^^ maybe allow period for Jr. Sr.)
-         * ensure photo is a photo (png, jpg, jpeg, tiff?, bmp?)
-         */
         const newUser = req.body;
         const fileName = req.file != null ? req.file.filename: null
 
@@ -48,12 +42,12 @@ const usersController = {
                 number: newUser.phoneNumber,
                 photo: fileName
             });
-            res.sendStatus(201);
             console.log(`email ${newUser.email} registered successfully`);
+            res.redirect('/login')
         }).catch(error => {
             console.error('SQLError: ' + error.message);
             console.error("Failed to add user: " + newUser.email);
-            res.sendStatus(400);
+            res.redirect('/register')
         });
     },
     // /login

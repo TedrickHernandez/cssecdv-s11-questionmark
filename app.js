@@ -12,7 +12,7 @@ async function startServer() {
 	const bodyParser = require('body-parser')
 
 	const app = express();
-	const port = process.env.PORT; // 
+	const port = process.env.PORT;
 
 	// Serve static files from the 'public' directory
 	app.use('/static', express.static('public'));
@@ -44,8 +44,14 @@ async function startServer() {
 	app.use(router)
 	app.use('/api', userRouter)
 
+	app.use(redirectUnmatched);
+
 	app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
+}
+
+function redirectUnmatched(req, res) {
+	res.redirect("/");
 }
 
 startServer();

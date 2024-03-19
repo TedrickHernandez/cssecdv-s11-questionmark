@@ -68,7 +68,7 @@ const sessionsController = {
         })
         const isAdminVal = await isAdmin(email);
         if (isAdminVal) next()
-        else res.sendStatus(403)
+        else res.redirect('/')
     }
 }
 

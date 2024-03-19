@@ -31,7 +31,7 @@ const usersController = {
             return res.sendStatus(422)
         }
 
-        newUser.password = generateHash(newUser.password);
+        newUser.password = await generateHash(newUser.password);
 
         await sequelize.sync().then(async () => {
             await User.create({
@@ -60,8 +60,9 @@ const usersController = {
         }).then(async foundUser => {
             if (!foundUser) {
                 console.log(`${user.email} does not exist`);
-                res.redirect('/login?e=1')
-            } else if (compareHash(user.password, foundUser['password'])) {
+                req.session.error = 'Incorrect username or password';
+                res.redirect('/login?e=1');
+            } else if (await compareHash(user.password, foundUser['password'])) {
                 console.log(`${user.email} logged in`);
                 await createSession(req.sessionID, user.email, req.session.cookie._expires)
                 req.session.email = user.email
@@ -72,7 +73,8 @@ const usersController = {
                 else res.redirect('/');
             } else {
                 console.log(`${user.email} wrong password`);
-                res.redirect('/login?e=1')
+                req.session.error = 'Incorrect username or password';
+                res.redirect('/login?e=1');
             }
         }).catch(error => {
             console.error(error.message);
@@ -81,14 +83,14 @@ const usersController = {
     }
 }
 
-function generateHash(password) {
-    const salt = bcrypt.genSaltSync(12);
-    const hash = bcrypt.hashSync(password, salt);
+async function generateHash(password) {
+    const salt = await bcrypt.genSalt(16);
+    const hash = await bcrypt.hash(password, salt);
     return hash.toString();
 }
 
-function compareHash(password, hash) {
-    return bcrypt.compareSync(password, hash);
+async function compareHash(password, hash) {
+    return await bcrypt.compare(password, hash);
 }
 
 // email validation

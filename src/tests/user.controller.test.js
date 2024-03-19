@@ -4,7 +4,7 @@ const request = require('supertest')
 const baseURL = 'http://localhost:' + process.env.PORT
 
 const defaultEmail = 'standesu@email.com'
-const defaultPassword = '0123456789abcdef'
+const defaultPassword = 'rs'
 const defaultUser = {
     firstName: 'stan',
     lastName: 'desu',

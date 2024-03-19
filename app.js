@@ -10,12 +10,22 @@ async function startServer() {
 	const userRouter = require('./src/routes/user.router');
 	const session = require('express-session');
 	const bodyParser = require('body-parser')
+	const exphbs = require('express-handlebars')
 
 	const app = express();
 	const port = process.env.PORT;
 
 	// Serve static files from the 'public' directory
 	app.use('/static', express.static('public'));
+
+	// use handlebars
+    app.engine("hbs", exphbs.engine({
+        extname: "hbs"
+    }));
+    app.set("view engine", "hbs");
+    app.set("views", "./views");
+    app.set("view cache", false);
+
 	// Parse URL-encoded bodies (as sent by HTML forms)
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json())

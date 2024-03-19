@@ -12,27 +12,43 @@ router.get('/', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../views', 'login.html'));
+    res.render('login', {
+        title: 'Login',
+        scripts: [{
+            script: 'login.js'
+        }]
+    })
 });
 
 router.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../views', 'registration.html'));
+    res.render('registration', {
+        title: 'Register',
+    })
+    // res.sendFile(path.join(__dirname, '../../views', 'registration.html'));
 })
 
 router.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../views', 'home.html'));
+    res.render('home', {
+        title: 'Home'
+    })
 })
 
 router.get('/userDashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'userDashboard.html'));
 })
 
-router.get('/viewProfile', (req, res) => { // ATTENTION: FOR TESTING PURPOSES ONLY!!!
-    res.sendFile(path.join(__dirname, '../../views', 'profile.html'));
+router.get('/profile', (req, res) => { // ATTENTION: FOR TESTING PURPOSES ONLY!!!
+    res.render('profile', {
+        title: 'Profile'
+    })
+    // res.sendFile(path.join(__dirname, '../../views', 'profile.html'));
 })
 
 router.get('/editProfile', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../views', 'editProfile.html'));
+    res.render('editProfile', {
+        title: 'Edit Profile'
+    })
+    // res.sendFile(path.join(__dirname, '../../views', 'editProfile.html'));
 })
 
 router.get('/settings', (req, res) => {
@@ -47,7 +63,9 @@ router.post('/logout', removeSession, (req, res) => {
 });
 
 router.get('/admin', verifyAdminSession, (req, res) => {
-    res.sendFile(path.join(__dirname, '../../views', 'admin.html'));
+    res.render('admin', {
+        title: 'Admin Panel'
+    })
 });
 
 module.exports = router;

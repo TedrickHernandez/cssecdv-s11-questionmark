@@ -62,13 +62,25 @@ const sessionsController = {
             where: { id: req.sessionID }
         }).then(foundSession => {
             if (foundSession) {
-                if (new Date() > foundSession['expiresOn']) res.sendStatus(403)
+                if (new Date() > foundSession['expiresOn']) res.redirect('/')
                 return foundSession['email']
             }
         })
         const isAdminVal = await isAdmin(email);
         if (isAdminVal) next()
         else res.redirect('/')
+    },
+    getEmailFromSession: async (req, res, next) => {
+        await Session.findOne({
+            attributes: { include: ['email', 'expiresOn'] },
+            where: { id: req.sessionID }
+        }).then(foundSession => {
+            if (foundSession) {
+                if (new Date() > foundSession['expiresOn']) res.redirect('/')
+                res.locals.email = foundSession['email']
+                next();
+            } else res.redirect('/')
+        })
     }
 }
 

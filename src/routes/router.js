@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 const path = require('path');
-const { removeSession, verifyAdminSession } = require('../controllers/session.controller');
+const { removeSession, verifyAdminSession, getEmailFromSession } = require('../controllers/session.controller');
 const uploadPath = 'uploads/profilePic'
 const multerConfig = require('../../utils/multerConfig')
 const multer = multerConfig(path.join('public', uploadPath))
@@ -37,12 +37,7 @@ router.get('/userDashboard', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'userDashboard.html'));
 })
 
-router.get('/profile', (req, res) => { // ATTENTION: FOR TESTING PURPOSES ONLY!!!
-    res.render('profile', {
-        title: 'Profile'
-    })
-    // res.sendFile(path.join(__dirname, '../../views', 'profile.html'));
-})
+router.get('/profile', getEmailFromSession, usersController.getUserProfile);
 
 router.get('/editProfile', (req, res) => {
     res.render('editProfile', {

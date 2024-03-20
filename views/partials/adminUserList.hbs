@@ -3,15 +3,15 @@
 				<span class = "user-email">{{email}}</span>
 				<div class = "button-group">
 					<form action = "/pokeUser" method = "POST" style = "display: inline;">
-						<input type = "hidden" name = "userId" value = {{id}}> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+						<input type = "hidden" name = "userId" value = {{id}}>
 						<button type = "submit" class = "action-button">Poke</button>
 					</form>
 					<form action = "/adminizeUser" method = "POST" style = "display: inline;">
-						<input type = "hidden" name = "userId" value = {{id}}> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+						<input type = "hidden" name = "userId" value = {{id}}>
 						<button type = "submit" class = "action-button">Adminize</button>
 					</form>
 					<form action = "/deleteUser" method = "POST" style = "display: inline;">
-						<input type = "hidden" name = "userId" value = {{id}}> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+						<input type = "hidden" name = "userId" value = {{id}}>
 						<button type = "submit" class = "action-button">Delete</button>
 					</form>
 				</div>

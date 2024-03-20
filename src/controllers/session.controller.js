@@ -3,6 +3,30 @@ const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const { isAdmin } = require('./role.controller');
 
+const winston = require('winston');
+const { combine, timestamp, printf } = winston.format;
+
+// Define a custom format function
+const customFormat = printf(({ level, message, timestamp, session }) => {
+    return `${timestamp} [${session}] ${level}: ${message} (session.controller)`;
+});
+
+// Create a Winston logger instance
+const logger = winston.createLogger({
+    level: 'info',
+    format: combine(
+        timestamp(),
+        customFormat
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'logs/sessions.log'}),
+        new winston.transports.File({ filename: 'logs/combined.log' }),
+        // Add other transports as needed, like file transport
+    ]
+});
+
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
     process.env.DB_USERNAME,
@@ -15,9 +39,9 @@ const sequelize = new Sequelize(
 );
 
 sequelize.authenticate().then(() => {
-    console.log('Connection Sessions has been established successfully.');
+    logger.info('Connection Sessions has been established successfully.', {session: 'system'});
 }).catch((error) => {
-    console.error('Unable to connect to the Sessions: ', error);
+    logger.error(`Unable to connect to the Sessions: ${error}`, {session: 'system'});
 });
 
 const sessionsController = {
@@ -29,8 +53,9 @@ const sessionsController = {
         }
         Session.upsert(session)
         .catch((error) => {
-            console.error(error);
+            logger.error(error);
         });
+        logger.info(`new session created`, {session: sessionID});
     },
     verifySession: async (req, res, next) => {
         if (req.sessionID) {
@@ -42,8 +67,8 @@ const sessionsController = {
             .then(foundSession => {
                 if (foundSession){
                     if (new Date() > foundSession['expiresOn']) {
+                        logger.warn(`attempted expired session`, {session: req.sessionID});
                         req.session.destroy();
-                        console.log(new Date(), foundSession, 'SESSION DESTROYED');
                     }
                 }
             })
@@ -51,17 +76,25 @@ const sessionsController = {
         next();
     },
     removeSession: async (req, res, next) => {
+        const sessionID = req.sessionID
+        logger.info(`session to be destroyed`, {session: sessionID});
+        Session.destroy({
+            where: { id: sessionID }
+        });
         req.session.destroy();
         next();
     },
     verifyAdminSession: async (req, res, next) => {
-        console.log(new Date(), req.sessionID, 'attempted to access /admin');
+        logger.warn(`attempted to access /admin`, {session: req.sessionID});
         const email = await Session.findOne({
             attributes: { include: ['email', 'expiresOn'] },
             where: { id: req.sessionID }
         }).then(foundSession => {
             if (foundSession) {
-                if (new Date() > foundSession['expiresOn']) res.redirect('/')
+                if (new Date() > foundSession['expiresOn']){
+                    logger.warn(`attempted expired session`, {session: req.sessionID});
+                    res.redirect('/')
+                }
                 return foundSession['email']
             }
         })

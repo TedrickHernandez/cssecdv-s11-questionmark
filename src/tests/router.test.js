@@ -9,3 +9,10 @@ test('user opens website with no directory should be redirected to /home', async
     expect(res.redirect).toBe(true);
     expect(res.headers['location']).toBe('/home')
 })
+
+test('user opens admin panel but should be redirected to /home', async () => {
+    const res = await request(baseURL).get('/admin');
+    expect(res.statusCode).toBe(302)
+    expect(res.redirect).toBe(true);
+    expect(res.headers['location']).toBe('/')
+})

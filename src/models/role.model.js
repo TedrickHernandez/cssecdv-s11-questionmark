@@ -25,10 +25,4 @@ const Role = sequelize.define('roles', {
     }
 });
 
-sequelize.sync().then(() => {
-    console.log('Roles table synced successfully');
-}).catch((error) => {
-    console.error('Unable to sync \'roles\' table: ', error);
-});
-
 module.exports = Role

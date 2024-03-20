@@ -50,10 +50,4 @@ const User = sequelize.define('users', {
     }
 });
 
-sequelize.sync().then(() => {
-    console.log('Users table synced successfully');
-}).catch((error) => {
-    console.error('Unable to sync \'users\' table: ', error);
-});
-
 module.exports = User;

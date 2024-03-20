@@ -16,14 +16,39 @@ const sequelize = new Sequelize(
 );
 
 sequelize.authenticate().then(() => {
-    console.log('Connection Users has been established successfully.');
+    logger.info('Connection Users has been established successfully.', {session: 'system'});
 }).catch((error) => {
-    console.error('Unable to connect to the Users: ', error);
+    logger.error(`Unable to connect to the Users: ${error}`, {session: 'system'});
+});
+
+const winston = require('winston');
+const { combine, timestamp, printf } = winston.format;
+
+// Define a custom format function
+const customFormat = printf(({ level, message, timestamp, session }) => {
+    return `${timestamp} [${session}] ${level}: ${message} (user.controller)`;
+});
+
+// Create a Winston logger instance
+const logger = winston.createLogger({
+    level: 'info',
+    format: combine(
+        timestamp(),
+        customFormat
+    ),
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'logs/users.log'}),
+        new winston.transports.File({ filename: 'logs/combined.log' }),
+        // Add other transports as needed, like file transport
+    ]
 });
 
 const usersController = {
     // /register
     createUser: async (req, res) => {
+        logger.info(`attempt to create user`, {session: req.sessionID});
         const newUser = req.body;
         const fileName = req.file != null ? req.file.filename : 'default.png'
 
@@ -42,53 +67,65 @@ const usersController = {
                 number: newUser.phoneNumber,
                 photo: fileName
             });
-            console.log(`email ${newUser.email} registered successfully`);
+            logger.info(`create user success`, {session: req.sessionID});
             res.redirect('/login')
         }).catch(error => {
-            console.error('SQLError: ' + error.message);
-            console.error("Failed to add user: " + newUser.email);
+            logger.error(`failed to create user`, {session: req.sessionID});
+            logger.error(`SQLError: ${error.message}`, {session: req.sessionID});
             res.redirect('/register')
         });
     },
     // /login
     verifyUser: async (req, res) => {
-        req.session.regenerate((err) => {
-            if (err) {
-                // Handle error if regeneration fails
-                console.error('Error regenerating session:', err);
-            }})
-        console.log(new Date(), req.sessionID, 'sign in attempt');
         const user = req.body;
-        console.log(`attempted login on ${user.email}`)
+        logger.info(`login attempt on ${user.email}`, {session: req.sessionID});
         await User.findOne({
             attributes: { include: ['password'] },
             where: { email: user.email }
         }).then(async foundUser => {
             if (!foundUser) {
-                console.log(`${user.email} does not exist`);
-                req.session.error = 'Incorrect username or password';
+                logger.info(`${user.email} does not exist`, {session: req.sessionID});
                 res.redirect('/login?e=1');
             } else if (await compareHash(user.password, foundUser['password'])) {
-                console.log(`${user.email} logged in`);
+                const oldId = req.sessionID;
+                try {
+                    await new Promise((resolve, reject) => {
+                        req.session.regenerate((err) => {
+                            if (err) {
+                                logger.error(`Error regenerating session: ${err}`, {session: req.sessionID});
+                                reject(err); // Reject the promise if an error occurs
+                            } else {
+                                resolve(); // Resolve the promise if regeneration is successful
+                            }
+                        });
+                    });
+
+                    logger.info(`Regenerate session: ${oldId}`, {session: req.sessionID});
+                    // Proceed with other actions that depend on the new session ID
+                } catch (error) {
+                    // Handle regeneration errors
+                    res.redirect('/login?e=1');
+                }
                 await createSession(req.sessionID, user.email, req.session.cookie._expires)
+                logger.info(`${user.email} logged in`, {session: req.sessionID});
                 req.session.email = user.email
                 if (await rolesController.isAdmin(user.email)) {
-                    console.log('admin logged in');
+                    logger.warn(`${user.email} is admin`, {session: req.sessionID});
                     res.redirect('/admin')
                 }
                 else res.redirect('/');
             } else {
-                console.log(`${user.email} wrong password`);
-                req.session.error = 'Incorrect username or password';
+                logger.info(`${user.email} wrong password`, {session: req.sessionID});
                 res.redirect('/login?e=1');
             }
         }).catch(error => {
-            console.error(error.message);
+            logger.error(error.message);
             res.sendStatus(500);
         });
     },
     //admin panel
     getAllUsers: async (req, res) => {
+        logger.warn(`request all users`, {session: req.sessionID});
         User.findAll({ raw: true }).then(users => {
             res.render('admin', {
                 title: 'Admin Panel',
@@ -119,6 +156,7 @@ const usersController = {
         })
     },
     pokeUser: async (req, res) => {
+        logger.warn(`poked user ${res.locals.id}`, {session: req.sessionID});
         await User.update({ poked: true }, {
             where: {
                 id: res.locals.id
@@ -127,6 +165,7 @@ const usersController = {
         res.redirect('/admin')
     },
     confirmPoke: async (req, res) => {
+        logger.info(`confirmed poke`, {session: req.sessionID});
         await User.update({ poked: false }, {
             where: { email: res.locals.email }
         });

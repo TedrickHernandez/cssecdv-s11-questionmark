@@ -28,10 +28,4 @@ const Session = sequelize.define('sessions', {
     }
 });
 
-sequelize.sync().then(() => {
-    console.log('Sessions table synced successfully');
-}).catch((error) => {
-    console.error('Unable to sync \'sessions\' table: ', error);
-});
-
 module.exports = Session;

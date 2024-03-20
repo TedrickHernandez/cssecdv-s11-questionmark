@@ -67,7 +67,12 @@ const sessionsController = {
             .then(foundSession => {
                 if (foundSession){
                     if (new Date() > foundSession['expiresOn']) {
-                        logger.warn(`attempted expired session`, {session: req.sessionID});
+                        const sessionID = req.sessionID
+                        logger.warn(`attempted expired session`, {session: sessionID});
+                        logger.info(`session to be destroyed`, {session: sessionID});
+                        Session.destroy({
+                            where: { id: sessionID }
+                        });
                         req.session.destroy();
                     }
                 }
@@ -111,10 +116,11 @@ const sessionsController = {
             where: { id: req.sessionID }
         }).then(foundSession => {
             if (foundSession) {
-                if (new Date() > foundSession['expiresOn']) res.redirect('/')
                 res.locals.email = foundSession['email']
                 next();
-            } else res.redirect('/')
+            }
+            else if (req.query.id) next()
+            else res.redirect('/')
         })
     }
 }

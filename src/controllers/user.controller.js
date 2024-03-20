@@ -134,15 +134,34 @@ const usersController = {
         })
     },
     getUserProfile: async (req, res) => {
-        User.findOne({
-            attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
-            where: { email: res.locals.email },
-            raw: true
-        }).then(async foundUser => {
-            res.locals.email = null
-            if (foundUser) res.render('profile', foundUser);
-            else res.redirect('/');
-        })
+        if (req.query.id) {
+            await User.findOne({
+                attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
+                where: { id: req.query.id },
+                raw: true
+            }).then(async foundUser => {
+                if (res.locals.email == foundUser['email']) {
+                    foundUser.self = true;
+                    res.locals.email = null
+                }
+                if (foundUser) res.render('profile', foundUser);
+                else res.redirect('/');
+            })
+        } else {
+            await User.findOne({
+                attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
+                where: { email: res.locals.email },
+                raw: true
+            }).then(async foundUser => {
+                foundUser.self = true;
+                console.log(foundUser);
+                res.locals.email = null
+                if (foundUser) res.render('profile', foundUser);
+                else res.redirect('/');
+            }).catch(err => {
+                logger.error(err, {session: req.sessionID});
+            })
+        }
     },
     getUserDashboard: async (req, res) => {
         User.findOne({
@@ -153,6 +172,9 @@ const usersController = {
             res.locals.email = null
             if (foundUser) res.render('userDashboard', foundUser);
             else res.redirect('/');
+        }).catch((err) => {
+            logger.error(err, {session: req.sessionID})
+            res.redirect('/dashboard')
         })
     },
     pokeUser: async (req, res) => {

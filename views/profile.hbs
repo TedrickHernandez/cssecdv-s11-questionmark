@@ -29,19 +29,27 @@
 			</li>
 		</ul>
 	</div>
+	{{#if self}}
 	<form action = "/editProfile" method = "GET"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING THEIR OWN PROFILE -->
 		<button type = "submit">Edit Own Profile</button>
 	</form>
-	<form action = "/addFriend" method = "POST"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING STRANGER -->
-		<button type = "submit">Add Friend</button>
-	</form>
-	<form action = "/unfriend" method = "POST"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING FRIEND -->
-		<button type = "submit">Unfriend</button>
-	</form>
-	<form action = "/userDashboard" method = "GET">
+	{{else}}
+		{{#if friends}}
+		<form action = "/addFriend" method = "POST"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING STRANGER -->
+			<button type = "submit">Add Friend</button>
+		</form>
+		{{else}}
+		<form action = "/unfriend" method = "POST"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING FRIEND -->
+			<button type = "submit">Unfriend</button>
+		</form>
+		{{/if}}
+	{{/if}}
+	{{#if self}}
+	<form action = "/dashboard" method = "GET">
 		<button type = "submit">Dashboard</button>
 	</form>
 	<form action = "/logout" method = "POST">
 		<button type = "submit">Logout</button>
 	</form>
+	{{/if}}
 </body>

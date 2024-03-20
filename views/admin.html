@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+	<title>Admin Panel</title>
+	<link rel = "stylesheet" href = "../public/css/styles.css">
+</head>
+<body>
+	<h2>Admin Panel</h2>
+	<div>
+		<h3>Registered Users</h3>
+		<ul id = "userList">
+			<!-- User items will be placed here; placeholders for now -->
+			<li>
+				User 1
+				<form action = "/deleteUser" method = "POST">
+					<input type = "hidden" name = "userId" value = "1"> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+					<button type = "submit">Delete</button>
+				</form>
+			</li>
+			<li>
+				User 2
+				<form action = "/deleteUser" method = "POST">
+					<input type = "hidden" name = "userId" value = "2"> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+					<button type = "submit">Delete</button>
+				</form>
+			</li>
+			<li>
+				User 3
+				<form action = "/deleteUser" method = "POST">
+					<input type = "hidden" name = "userId" value = "3"> <!-- ATTENTION; MODIFY ACCORDINGLY -->
+					<button type = "submit">Delete</button>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<form action = "/logout" method = "POST">
+		<button type = "submit">Logout</button>
+	</form>
+</body>
+</html>

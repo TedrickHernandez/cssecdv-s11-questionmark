@@ -81,4 +81,5 @@ startServer();
 // Create an HTTPS server
 https.createServer(options, app).listen(443, () => {
 	console.log('HTTPS server running on port 443');
+	console.log('https://localhost/');
   });

@@ -218,7 +218,7 @@ const usersController = {
 }
 
 async function generateHash(password) {
-    const salt = await bcrypt.genSalt(process.env.SALT_ROUNDS);
+    const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS));
     const hash = await bcrypt.hash(password, salt);
     return hash.toString();
 }

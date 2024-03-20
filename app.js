@@ -79,6 +79,8 @@ function redirectUnmatched(req, res) {
 
 startServer();
 
+if (process.env.DEV == 1) process.env.SALT_ROUNDS = process.env.SALT_ROUNDS_DEV;
+
 // Create an HTTPS server
 https.createServer(options, app).listen(443, () => {
 	console.log('HTTPS server running on port 443');

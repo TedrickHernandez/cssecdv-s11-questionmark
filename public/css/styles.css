@@ -134,6 +134,34 @@ textarea:focus {
 	justify-content: flex-end;
 }
 
+.banner {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	padding: 20px 0;
+	text-align: center;
+	color: #333;
+	font-size: 18px;
+	margin-bottom: 30px;
+}
+
+.banner button {
+	width: auto;
+	height: auto;
+	padding: 10px 20px;
+	font-size: 16px;
+	margin: 10px 0;
+	display: inline-block;
+	background-color: #333;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.banner button:hover {
+	background-color: #444;
+}
+
 input[type = "email"], input[type = "password"] {
 	display: block;
 	width: 100%;

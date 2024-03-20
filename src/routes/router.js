@@ -29,8 +29,10 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
+
     res.render('home', {
-        title: 'Home'
+        title: 'Home',
+        a: res.locals.auth ? true : false
     })
 })
 

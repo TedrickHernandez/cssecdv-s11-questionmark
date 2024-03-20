@@ -74,6 +74,8 @@ const sessionsController = {
                             where: { id: sessionID }
                         });
                         req.session.destroy();
+                    } else {
+                        res.locals.auth = true
                     }
                 }
             })

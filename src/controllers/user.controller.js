@@ -144,7 +144,7 @@ const usersController = {
                 raw: true
             }).then(async foundUser => {
                 if (res.locals.email) {
-                    foundUser.auth = true
+                    foundUser.auth = res.locals.auth
                     foundUser.friends = false
                     const fren = await isFriends(res.locals.email, foundUser['email']);
                     if (res.locals.email == foundUser['email']) {
@@ -175,7 +175,7 @@ const usersController = {
                 const friendsList = await parseFriends(await getFriends(foundUser['email']))
                 foundUser.friendsList = friendsList
                 res.locals.email = null
-                foundUser.auth = true
+                foundUser.auth = res.locals.auth
                 if (foundUser) res.render('profile', foundUser);
                 else res.redirect('/');
             }).catch(err => {

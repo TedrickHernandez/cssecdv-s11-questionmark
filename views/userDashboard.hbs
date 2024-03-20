@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html lang = "en">
-<head>
-	<meta charset = "utf-8">
-	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
-	<title>User Dashboard</title>
-	<link rel = "stylesheet" href = "/static/css/styles.css">
-</head>
 <body>
 	<form action = "/home" method = "GET"> <!-- ATTENTION; ENSURE THE SESSION PERSISTS, HOW EVER THAT WORKS -->
 		<button type = "submit">OnlyFriends</button>
 	</form>
+	{{#if poked}}
 	<div class = "banner"> <!-- POKE BANNER -->
 		You've been poked by the admin.
 		<form action = "/confirmPoke" method = "POST">
 			<button type = "submit">Confirm</button>
 		</form>
 	</div>
-	<h1>Hello, RandomGuy!</h1> <!-- ATTENTION -->
+	{{/if}}
+	<h1>Hello, {{first_name}}!</h1> <!-- ATTENTION -->
 	<h2>User Dashboard</h2>
 	<div>
 		<h3>Friends</h3>
@@ -56,7 +50,7 @@
 			</li>
 		</ul>
 	</div>
-	<form action = "/viewProfile" method = "GET"> <!-- VIEW PROFILE -->
+	<form action = "/profile" method = "GET"> <!-- VIEW PROFILE -->
 		<button type = "submit">View Own Profile</button>
 	</form>
 	<form action = "/settings" method = "GET"> <!-- SETTINGS -->
@@ -66,4 +60,3 @@
 		<button type = "submit">Logout</button>
 	</form>
 </body>
-</html>

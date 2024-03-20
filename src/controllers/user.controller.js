@@ -99,6 +99,30 @@ const usersController = {
             if (foundUser) res.render('profile', foundUser);
             else res.redirect('/');
         })
+    },
+    getUserDashboard: async (req, res) => {
+        User.findOne({
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
+            where: { email: res.locals.email },
+            raw: true
+        }).then(async foundUser => {
+            if (foundUser) res.render('userDashboard', foundUser);
+            else res.redirect('/');
+        })
+    },
+    pokeUser: async (req, res) => {
+        await User.update({ poked: true }, {
+            where: {
+                id: res.locals.id
+            }
+        });
+        res.redirect('/admin')
+    },
+    confirmPoke: async (req, res) => {
+        await User.update({ poked: false }, {
+            where: { email: res.locals.email }
+        });
+        res.redirect('/dashboard');
     }
 }
 

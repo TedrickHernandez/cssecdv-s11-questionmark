@@ -67,7 +67,10 @@ const sessionsController = {
             }
         })
         const isAdminVal = await isAdmin(email);
-        if (isAdminVal) next()
+        if (isAdminVal) {
+            res.locals.id = req.body.userId
+            next()
+        }
         else res.redirect('/')
     },
     getEmailFromSession: async (req, res, next) => {

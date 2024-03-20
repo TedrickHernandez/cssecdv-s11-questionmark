@@ -43,6 +43,10 @@ const User = sequelize.define('users', {
     },
     photo: {
         type: DataTypes.STRING,
+    },
+    poked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 });
 

@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 const path = require('path');
-const { removeSession, verifyAdminSession, getEmailFromSession } = require('../controllers/session.controller');
+const { removeSession, verifyAdminSession, getEmailFromSession, verifySession } = require('../controllers/session.controller');
 const uploadPath = 'uploads/profilePic'
 const multerConfig = require('../../utils/multerConfig')
 const multer = multerConfig(path.join('public', uploadPath))
@@ -33,9 +33,7 @@ router.get('/home', (req, res) => {
     })
 })
 
-router.get('/userDashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../views', 'userDashboard.html'));
-})
+router.get('/dashboard', getEmailFromSession, usersController.getUserDashboard);
 
 router.get('/profile', getEmailFromSession, usersController.getUserProfile);
 
@@ -58,5 +56,9 @@ router.post('/logout', removeSession, (req, res) => {
 });
 
 router.get('/admin', verifyAdminSession, usersController.getAllUsers);
+
+router.post('/pokeUser', verifyAdminSession, usersController.pokeUser);
+
+router.post('/confirmPoke', getEmailFromSession, usersController.confirmPoke)
 
 module.exports = router;

@@ -80,6 +80,15 @@ const usersController = {
             console.error(error.message);
             res.sendStatus(500);
         });
+    },
+    //admin panel
+    getAllUsers: async (req, res) => {
+        User.findAll({ raw: true }).then(users => {
+            res.render('admin', {
+                title: 'Admin Panel',
+                users: users
+            })
+        })
     }
 }
 

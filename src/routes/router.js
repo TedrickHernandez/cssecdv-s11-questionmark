@@ -62,10 +62,6 @@ router.post('/logout', removeSession, (req, res) => {
     res.redirect('/login'); // Redirect to login
 });
 
-router.get('/admin', verifyAdminSession, (req, res) => {
-    res.render('admin', {
-        title: 'Admin Panel'
-    })
-});
+router.get('/admin', verifyAdminSession, usersController.getAllUsers);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const request = require('supertest')
 const baseURL = 'http://localhost:' + process.env.PORT
 
 const defaultEmail = 'standesu@email.com'
-const defaultPassword = 'rs'
+const defaultPassword = '0123456789abcdef'
 const defaultUser = {
     firstName: 'stan',
     lastName: 'desu',
@@ -13,7 +13,6 @@ const defaultUser = {
     phoneNumber: '0917 123 4567'
 }
 beforeAll(async () => {
-    console.log('test');
     jest.setTimeout(100000); // change timeout to 10 seconds
 });
 

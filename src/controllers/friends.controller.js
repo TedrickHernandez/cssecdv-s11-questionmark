@@ -91,8 +91,16 @@ const friendsController = {
         }
         res.locals.email = null;
         res.redirect(`/profile?id=${req.body.id}`);
+    },
+    getFriends: async (email) => {
+        return await Friends.findAll({
+            attributes: ['friendsWith'],
+            where: { user: email },
+            raw: true
+        }).catch(err => {
+            logger.error(err, { session: req.sessionID});
+        })
     }
-
 }
 
 module.exports = friendsController;

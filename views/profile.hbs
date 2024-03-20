@@ -11,23 +11,14 @@
 		</p>
 	</div>
 	<div>
+		{{#if friendsList}}
 		<h3>Friends</h3>
-		<ul id = "friendsList"> <!-- ATTENTION -->
-			<li>
-				Friend 1
-				<form action = "/viewProfile" method = "GET">
-					<input type = "hidden" name = "userId" value = "1">
-					<button type = "submit">Visit</button>
-				</form>
-			</li>
-			<li>
-				Friend 2
-				<form action = "/viewProfile" method = "GET">
-					<input type = "hidden" name = "userId" value = "2">
-					<button type = "submit">Visit</button>
-				</form>
-			</li>
+		<ul id = "friendsList">
+			{{#each friendsList}}
+				{{> friend first_name=first_name last_name=last_name id=id}}
+			{{/each}}
 		</ul>
+		{{/if}}
 	</div>
 	{{#if auth}}
 		{{#if self}}

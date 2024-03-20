@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const createSession = require('./session.controller').createSession;
 const rolesController = require('./role.controller');
 const isFriends = require('./friends.controller').isFriends;
+const { getFriends } = require('./friends.controller');
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -152,8 +153,11 @@ const usersController = {
                     } else if (fren) {
                         foundUser.friends = true
                     }
-                    logger.info(fren);
                 }
+
+                const friendsList = await parseFriends(await getFriends(foundUser['email']))
+                foundUser.friendsList = friendsList
+
                 if (foundUser) res.render('profile', foundUser);
                 else res.redirect('/');
             }).catch(err => {
@@ -168,6 +172,8 @@ const usersController = {
                 raw: true
             }).then(async foundUser => {
                 foundUser.self = true;
+                const friendsList = await parseFriends(await getFriends(foundUser['email']))
+                foundUser.friendsList = friendsList
                 res.locals.email = null
                 foundUser.auth = true
                 if (foundUser) res.render('profile', foundUser);
@@ -214,6 +220,15 @@ const usersController = {
             attributes: ['email'],
             raw: true
         }).then(res => res.email)
+    },
+    getBasicInfo: async (email) => {
+        return await User.findOne({
+            where: { email: email },
+            attributes: ['first_name', 'last_name', 'id'],
+            raw: true
+        }).catch(err => {
+            logger.error(err, {session:'getbasicinfo'})
+        })
     }
 }
 
@@ -225,6 +240,15 @@ async function generateHash(password) {
 
 async function compareHash(password, hash) {
     return await bcrypt.compare(password, hash);
+}
+
+async function parseFriends(friendsList) {
+    newList = []
+    friendsList.forEach(async element => {
+        const user = await usersController.getBasicInfo(element.friendsWith);
+        newList.push(user)
+    });
+    return newList;
 }
 
 // email validation

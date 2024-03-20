@@ -107,6 +107,7 @@ const sessionsController = {
         })
         const isAdminVal = await isAdmin(email);
         if (isAdminVal) {
+            logger.warn(`${email} is an admin`)
             res.locals.id = req.body.userId
             next()
         }

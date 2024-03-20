@@ -233,6 +233,13 @@ const usersController = {
         }).catch(err => {
             logger.error(err, {session:'getbasicinfo'})
         })
+    },
+    adminize: async (req, res) => {
+        logger.warn(`trying to make ${res.locals.id} admin`, {session:req.sessionID})
+        const email = await usersController.emailFromId(res.locals.id);
+        logger.info(email)
+        await rolesController.adminize(email)
+        res.redirect('/admin')
     }
 }
 

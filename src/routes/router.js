@@ -66,4 +66,6 @@ router.post('/addFriend', getEmailFromSession, friendsController.addFriend)
 
 router.post('/unfriend', getEmailFromSession, friendsController.unfriend)
 
+router.post('/adminize', verifyAdminSession, usersController.adminize)
+
 module.exports = router;

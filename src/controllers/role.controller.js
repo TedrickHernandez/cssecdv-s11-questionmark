@@ -53,6 +53,15 @@ const rolesController = {
             if (!foundRole) return false;
             return foundRole['isAdmin'];
         });
+    },
+    async adminize(email) {
+        await Role.create({
+            email: email,
+            isAdmin: true
+        }).catch(err => {
+            logger.error(err, { session: 'system' })
+        })
+        logger.warn(`${email} has been made an admin`, {session: 'system'})
     }
 }
 

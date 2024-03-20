@@ -17,12 +17,15 @@ const Role = sequelize.define('roles', {
         type: DataTypes.STRING(320),
         allowNull: false,
         unique: true,
+        primaryKey: true
     },
     isAdmin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
     }
+},{
+    timestamps: false
 });
 
 module.exports = Role

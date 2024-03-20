@@ -200,3 +200,7 @@ input[type = "file"]:focus {
 	text-align: center;
 	color: red;
 }
+
+.hidden {
+	display: none;
+}

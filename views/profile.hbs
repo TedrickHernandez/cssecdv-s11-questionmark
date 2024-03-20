@@ -31,17 +31,19 @@
 	</div>
 	{{#if auth}}
 		{{#if self}}
-		<form action = "/editProfile" method = "GET"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING THEIR OWN PROFILE -->
+		<form action = "/editProfile" method = "GET">
 			<button type = "submit">Edit Own Profile</button>
 		</form>
 		{{else}}
 			{{#if friends}}
-			<form action = "/addFriend" method = "POST"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING STRANGER -->
-				<button type = "submit">Add Friend</button>
+			<form action = "/unfriend" method = "POST">
+				<input type = "number" id = "id" name = "id" value={{id}} class="hidden">
+				<button type = "submit">Unfriend</button>
 			</form>
 			{{else}}
-			<form action = "/unfriend" method = "POST"> <!-- ATTENTION; VISIBLE ONLY WHEN USER VIEWING FRIEND -->
-				<button type = "submit">Unfriend</button>
+			<form action = "/addFriend" method = "POST">
+				<input type = "number" id = "id" name = "id" value={{id}} class="hidden">
+				<button type = "submit">Add Friend</button>
 			</form>
 			{{/if}}
 		{{/if}}

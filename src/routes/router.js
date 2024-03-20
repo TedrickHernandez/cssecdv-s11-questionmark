@@ -5,6 +5,7 @@ const uploadPath = 'uploads/profilePic'
 const multerConfig = require('../../utils/multerConfig')
 const multer = multerConfig(path.join('public', uploadPath))
 const usersController = require('../controllers/user.controller');
+const friendsController = require('../controllers/friends.controller');
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -60,5 +61,9 @@ router.get('/admin', verifyAdminSession, usersController.getAllUsers);
 router.post('/pokeUser', verifyAdminSession, usersController.pokeUser);
 
 router.post('/confirmPoke', getEmailFromSession, usersController.confirmPoke)
+
+router.post('/addFriend', getEmailFromSession, friendsController.addFriend)
+
+router.post('/unfriend', getEmailFromSession, friendsController.unfriend)
 
 module.exports = router;

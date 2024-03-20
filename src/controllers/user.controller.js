@@ -3,6 +3,7 @@ const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const createSession = require('./session.controller').createSession;
 const rolesController = require('./role.controller');
+const isFriends = require('./friends.controller').isFriends;
 
 const sequelize = new Sequelize(
     process.env.DB_SCHEMA,
@@ -80,7 +81,7 @@ const usersController = {
         const user = req.body;
         logger.info(`login attempt on ${user.email}`, {session: req.sessionID});
         await User.findOne({
-            attributes: { include: ['password'] },
+            attributes: ['password'],
             where: { email: user.email }
         }).then(async foundUser => {
             if (!foundUser) {
@@ -135,6 +136,7 @@ const usersController = {
     },
     getUserProfile: async (req, res) => {
         if (req.query.id) {
+            logger.info(`view profile of ${req.query.id}`, {session: req.sessionID})
             await User.findOne({
                 attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
                 where: { id: req.query.id },
@@ -142,15 +144,24 @@ const usersController = {
             }).then(async foundUser => {
                 if (res.locals.email) {
                     foundUser.auth = true
-                }
-                if (res.locals.email == foundUser['email']) {
-                    foundUser.self = true;
-                    res.locals.email = null
+                    foundUser.friends = false
+                    const fren = await isFriends(res.locals.email, foundUser['email']);
+                    if (res.locals.email == foundUser['email']) {
+                        foundUser.self = true;
+                        res.locals.email = null
+                    } else if (fren) {
+                        foundUser.friends = true
+                    }
+                    logger.info(fren);
                 }
                 if (foundUser) res.render('profile', foundUser);
                 else res.redirect('/');
+            }).catch(err => {
+                logger.error(err, {session: req.sessionID});
+                res.redirect('/')
             })
         } else {
+            logger.info('view profile', {session: req.sessionID})
             await User.findOne({
                 attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
                 where: { email: res.locals.email },
@@ -163,6 +174,7 @@ const usersController = {
                 else res.redirect('/');
             }).catch(err => {
                 logger.error(err, {session: req.sessionID});
+                res.redirect('/')
             })
         }
     },
@@ -195,11 +207,18 @@ const usersController = {
             where: { email: res.locals.email }
         });
         res.redirect('/dashboard');
+    },
+    emailFromId: async(id) => {
+        return await User.findOne({
+            where: { id: id },
+            attributes: ['email'],
+            raw: true
+        }).then(res => res.email)
     }
 }
 
 async function generateHash(password) {
-    const salt = await bcrypt.genSalt(16);
+    const salt = await bcrypt.genSalt(process.env.SALT_ROUNDS);
     const hash = await bcrypt.hash(password, salt);
     return hash.toString();
 }

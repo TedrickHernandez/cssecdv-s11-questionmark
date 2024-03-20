@@ -34,9 +34,16 @@ CREATE TABLE cssecdb.`roles` (
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE cssecdb.`friends` (
+  `user` varchar(320) NOT NULL,
+  `friendsWith` varchar(320) NOT NULL,
+  PRIMARY KEY (`user`, `friendsWith`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 INSERT INTO cssecdb.`roles`(`email`,`isAdmin`) VALUES('standesu@email.com', 1);
 
 create user cssecdv@localhost identified by 'extremelySecurePassword';
 grant select, insert, update on cssecdb.sessions to cssecdv@localhost;
-grant select, insert, update on cssecdb.users to cssecdv@localhost;
-grant select on cssecdb.roles to cssecdv@localhost;
+grant select, insert, update, delete on cssecdb.users to cssecdv@localhost;
+grant select, insert, update, delete on cssecdb.friends to cssecdv@localhost;
+grant select, insert, update on cssecdb.roles to cssecdv@localhost;

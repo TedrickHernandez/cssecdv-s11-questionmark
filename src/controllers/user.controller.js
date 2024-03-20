@@ -115,14 +115,14 @@ const usersController = {
                     logger.warn(`${user.email} is admin`, {session: req.sessionID});
                     res.redirect('/admin')
                 }
-                else res.redirect('/');
+                else res.redirect('/dashboard');
             } else {
                 logger.info(`${user.email} wrong password`, {session: req.sessionID});
                 res.redirect('/login?e=1');
             }
         }).catch(error => {
             logger.error(error.message);
-            res.sendStatus(500);
+            res.redirect('/');
         });
     },
     //admin panel
@@ -191,7 +191,11 @@ const usersController = {
             raw: true
         }).then(async foundUser => {
             res.locals.email = null
-            if (foundUser) res.render('userDashboard', foundUser);
+            if (foundUser) {
+                const friendsList = await parseFriends(await getFriends(foundUser['email']))
+                foundUser.friendsList = friendsList
+                res.render('userDashboard', foundUser);
+            }
             else res.redirect('/');
         }).catch((err) => {
             logger.error(err, {session: req.sessionID})

@@ -13,23 +13,14 @@
 	<h1>Hello, {{first_name}}!</h1>
 	<h2>User Dashboard</h2>
 	<div>
+		{{#if friendsList}}
 		<h3>Friends</h3>
-		<ul id = "friendsList"> <!-- ATTENTION; TAKE NOTE  -->
-			<li>
-				Friend 1
-				<form action = "/viewProfile" method = "GET">
-					<input type = "hidden" name = "userId" value = "1">
-					<button type = "submit">Visit</button>
-				</form>
-			</li>
-			<li>
-				Friend 2
-				<form action = "/viewProfile" method = "GET">
-					<input type = "hidden" name = "userId" value = "2">
-					<button type = "submit">Visit</button>
-				</form>
-			</li>
+		<ul id = "friendsList">
+			{{#each friendsList}}
+				{{> friend first_name=first_name last_name=last_name id=id}}
+			{{/each}}
 		</ul>
+		{{/if}}
 	</div>
 	<div>
 		<h3>Wanna meet new people?</h3>

@@ -19,14 +19,21 @@ To run this project, you will need to add the following environment variables to
 PORT = 3000 # change if conflict
 
 # Rate Limiting
-RATE_LIMIT = 15 # timeout in minutes, can change
-NUM_ATTEMPS = 10 # can change
+RATE_LIMIT = 0 # timeout in minutes, can change
+NUM_ATTEMPS = 0 # can change
 
 # MySQL Credentials # set per deployment
 DB_SCHEMA =
 DB_USERNAME =
 DB_PASSWORD =
 DB_ADDRESS =
+
+###
+NODE_TLS_REJECT_UNAUTHORIZED = 0
+SALT_ROUNDS = 16
+SALT_ROUNDS_DEV = 2
+
+DEV = 0
 ```
 #### ^^^ MAKE SURE SPECIFIED DATABASE USER HAS ONLY THE REQUIRED PRIVILEGES ^^^
 

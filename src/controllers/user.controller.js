@@ -52,6 +52,12 @@ const usersController = {
     },
     // /login
     verifyUser: async (req, res) => {
+        req.session.regenerate((err) => {
+            if (err) {
+                // Handle error if regeneration fails
+                console.error('Error regenerating session:', err);
+            }})
+        console.log(new Date(), req.sessionID, 'sign in attempt');
         const user = req.body;
         console.log(`attempted login on ${user.email}`)
         await User.findOne({
@@ -96,6 +102,7 @@ const usersController = {
             where: { email: res.locals.email },
             raw: true
         }).then(async foundUser => {
+            res.locals.email = null
             if (foundUser) res.render('profile', foundUser);
             else res.redirect('/');
         })
@@ -106,6 +113,7 @@ const usersController = {
             where: { email: res.locals.email },
             raw: true
         }).then(async foundUser => {
+            res.locals.email = null
             if (foundUser) res.render('userDashboard', foundUser);
             else res.redirect('/');
         })

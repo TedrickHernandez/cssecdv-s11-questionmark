@@ -22,7 +22,6 @@ sequelize.authenticate().then(() => {
 
 const sessionsController = {
     async createSession(sessionID, email, expiresOn) {
-        console.log(new Date(), sessionID, 'sign in attempt');
         const session = {
             id: sessionID,
             email: email,

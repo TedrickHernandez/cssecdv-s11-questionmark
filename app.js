@@ -2,6 +2,7 @@ const https = require('https');
 const fs = require('fs');
 const express = require('express');
 const app = express();
+const logger = require('./custom_utils/logger');
 
 // Path to your certificate and private key
 const options = {
@@ -82,4 +83,7 @@ startServer();
 https.createServer(options, app).listen(443, () => {
 	console.log('HTTPS server running on port 443');
 	console.log('https://localhost/');
+
+	logger.info('HTTPS server running on port 443 | https://localhost/');
+	logger.error('Sample error occurred');
   });

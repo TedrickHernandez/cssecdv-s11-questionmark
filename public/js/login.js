@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
     const form = document.querySelector('#login');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+        document.getElementById('login_btn').disabled = true
         console.log('user submitted login form');
 
         const formData = new FormData(form);

@@ -29,7 +29,6 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/home', (req, res) => {
-
     res.render('home', {
         title: 'Home',
         a: res.locals.auth ? true : false
@@ -40,12 +39,7 @@ router.get('/dashboard', getEmailFromSession, usersController.getUserDashboard);
 
 router.get('/profile', getEmailFromSession, usersController.getUserProfile);
 
-router.get('/editProfile', (req, res) => {
-    res.render('editProfile', {
-        title: 'Edit Profile'
-    })
-    // res.sendFile(path.join(__dirname, '../../views', 'editProfile.html'));
-})
+router.post('/editProfile', getEmailFromSession, usersController.updateProfile);
 
 router.get('/settings', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'userSettings.html'));

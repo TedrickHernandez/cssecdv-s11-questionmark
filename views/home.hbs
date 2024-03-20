@@ -7,19 +7,18 @@
 		This is a web application where you can connect with your friends. And stuff. Blah blah.
 	</p>
 	{{#if a}}
-	<form action = "/login" method = "GET">
-		<button type = "submit">Login</button>
-	</form>
-	<form action = "/register" method = "GET">
-		<button type = "submit">Register</button>
-	</form>
-	{{else}}
 	<form action = "/dashboard" method = "GET">
 		<button type = "submit">Dashboard</button>
 	</form>
 	<form action = "/profile" method = "GET">
 		<button type = "submit">Profile</button>
 	</form>
-
+	{{else}}
+	<form action = "/login" method = "GET">
+		<button type = "submit">Login</button>
+	</form>
+	<form action = "/register" method = "GET">
+		<button type = "submit">Register</button>
+	</form>
 	{{/if}}
 </body>

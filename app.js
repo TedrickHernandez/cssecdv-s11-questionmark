@@ -70,11 +70,6 @@ async function startServer() {
 	app.use(redirectUnmatched);
 
 	// app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
-	app.use((req, res, next) => {
-		res.locals.auth = false;
-		res.locals.id = null;
-		next();
-	})
 }
 
 function redirectUnmatched(req, res) {

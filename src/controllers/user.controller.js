@@ -25,7 +25,7 @@ const usersController = {
     // /register
     createUser: async (req, res) => {
         const newUser = req.body;
-        const fileName = req.file != null ? req.file.filename: null
+        const fileName = req.file != null ? req.file.filename : 'default.png'
 
         if(!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.phoneNumber ||!newUser.password || !validateEmail(newUser.email) || !validatePhoneNumber(newUser.phoneNumber)){
             return res.sendStatus(422)
@@ -88,6 +88,16 @@ const usersController = {
                 title: 'Admin Panel',
                 users: users
             })
+        })
+    },
+    getUserProfile: async (req, res) => {
+        User.findOne({
+            attributes: { exclude: ['password', 'createdAt', 'updatedAt']},
+            where: { email: res.locals.email },
+            raw: true
+        }).then(async foundUser => {
+            if (foundUser) res.render('profile', foundUser);
+            else res.redirect('/');
         })
     }
 }

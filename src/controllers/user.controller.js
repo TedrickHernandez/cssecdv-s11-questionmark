@@ -140,6 +140,9 @@ const usersController = {
                 where: { id: req.query.id },
                 raw: true
             }).then(async foundUser => {
+                if (res.locals.email) {
+                    foundUser.auth = true
+                }
                 if (res.locals.email == foundUser['email']) {
                     foundUser.self = true;
                     res.locals.email = null
@@ -154,8 +157,8 @@ const usersController = {
                 raw: true
             }).then(async foundUser => {
                 foundUser.self = true;
-                console.log(foundUser);
                 res.locals.email = null
+                foundUser.auth = true
                 if (foundUser) res.render('profile', foundUser);
                 else res.redirect('/');
             }).catch(err => {

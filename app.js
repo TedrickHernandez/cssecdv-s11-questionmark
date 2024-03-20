@@ -1,3 +1,15 @@
+const https = require('https');
+const fs = require('fs');
+const express = require('express');
+const app = express();
+
+// Path to your certificate and private key
+const options = {
+  key: fs.readFileSync('./test_certs/server.key'),
+  cert: fs.readFileSync('./test_certs/server.crt'),
+  passphrase: 'passphrase'
+};
+
 const { verifySession } = require('./src/controllers/session.controller');
 
 async function startServer() {
@@ -12,7 +24,7 @@ async function startServer() {
 	const bodyParser = require('body-parser')
 	const exphbs = require('express-handlebars')
 
-	const app = express();
+	// const app = express();
 	const port = process.env.PORT;
 
 	// Serve static files from the 'public' directory
@@ -56,7 +68,7 @@ async function startServer() {
 
 	app.use(redirectUnmatched);
 
-	app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
+	// app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 }
 
@@ -65,3 +77,8 @@ function redirectUnmatched(req, res) {
 }
 
 startServer();
+
+// Create an HTTPS server
+https.createServer(options, app).listen(443, () => {
+	console.log('HTTPS server running on port 443');
+  });

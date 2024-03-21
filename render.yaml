@@ -29,5 +29,4 @@ services:
 databases:
   - name: db
     databaseName: cssecdb
-    engine: mysql
     region: singapore

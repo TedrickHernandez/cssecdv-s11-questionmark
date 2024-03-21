@@ -64,4 +64,6 @@ router.post('/unfriend', getEmailFromSession, friendsController.unfriend)
 
 router.post('/adminize', verifyAdminSession, usersController.adminize)
 
+router.post('/deleteUser', verifyAdminSession, usersController.deleteUser);
+
 module.exports = router;

@@ -19,7 +19,7 @@ const logger = winston.createLogger({
     transports: [
         new winston.transports.Console(),
         new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'logs/roles.log'}),
+        new winston.transports.File({ filename: 'logs/friends.log'}),
         new winston.transports.File({ filename: 'logs/combined.log' }),
         // Add other transports as needed, like file transport
     ]
@@ -58,6 +58,7 @@ const friendsController = {
     },
     addFriend: async (req, res) => {
         const friend = await require('./user.controller').emailFromId(req.body.id)
+        logger.info(`${res.locals.email} friends ${friend}`, { session: require.sessionID});
         await Friends.create({
             user: res.locals.email,
             friendsWith: friend
@@ -75,6 +76,7 @@ const friendsController = {
     unfriend: async (req, res) => {
         const areFriends = friendsController.isFriends(res.locals.email, req.body.id);
         const friend = await require('./user.controller').emailFromId(req.body.id)
+        logger.info(`${res.locals.email} unfriends ${friend}`, { session: require.sessionID});
         if (areFriends) {
             await Friends.destroy({
                 where: {
@@ -93,12 +95,13 @@ const friendsController = {
         res.redirect(`/profile?id=${req.body.id}`);
     },
     getFriends: async (email) => {
+        logger.info(`requested friends of ${email}`, { session: 'system'});
         return await Friends.findAll({
             attributes: ['friendsWith'],
             where: { user: email },
             raw: true
         }).catch(err => {
-            logger.error(err, { session: req.sessionID});
+            logger.error(err, { session: 'system'});
         })
     }
 }

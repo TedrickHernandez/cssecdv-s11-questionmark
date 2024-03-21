@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: app
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DB_SCHEMA
+        value: cssecdb
+      - key: DB_USERNAME
+        value: cssecdv
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: db
+          property: password
+      - key: DB_ADDRESS
+        fromDatabase:
+          name: db
+          property: host
+      - key: PORT
+        value: 3006
+      - key: RATE_LIMIT
+        value: 0
+      - key: NUM_ATTEMPS
+        value: 10
+    healthCheckPath: /health
+    regions:
+      - global
+
+databases:
+  - name: db
+    databaseName: cssecdb
+    engine: mysql
+    region: global
+    version: 8.0

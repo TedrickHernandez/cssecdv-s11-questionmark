@@ -24,6 +24,10 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
     res.render('registration', {
         title: 'Register',
+        error: req.query.e == 1 ? 'sum ting wong' : null,
+        scripts: [{
+            script: 'register.js'
+        }]
     })
     // res.sendFile(path.join(__dirname, '../../views', 'registration.html'));
 })
@@ -45,7 +49,15 @@ router.get('/settings', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'userSettings.html'));
 })
 
-router.post('/register', multer.upload.single('profilePhoto'), usersController.createUser)
+router.post('/register', (req, res, next) => {
+    try {
+        multer.upload.single('profilePhoto')
+    } catch (e) {}
+    try {
+        multer.upload.single('userJSON')
+    } catch (e) {}
+    next()
+}, usersController.createUser)
 
 // Logout Endpoint
 router.post('/logout', removeSession, (req, res) => {

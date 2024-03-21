@@ -14,22 +14,22 @@ const defaultUser = {
 }
 
 test('user creates account with valid information provided and no photo', async () => {
-    const createUser = await request(baseURL).post('/api/createUser').send(defaultUser);
+    const createUser = await request(baseURL).post('/register').send(defaultUser);
     expect(createUser.statusCode).toBe(302)
 });
 
 test('user creates account with invalid email', async () => {
     const newUser = Object.assign({}, defaultUser, {});
     newUser.email = 'INVALID EMAIL';
-    const createUser = await request(baseURL).post('/api/createUser').send(newUser);
-    expect(createUser.statusCode).toBe(422)
+    const createUser = await request(baseURL).post('/register').send(newUser);
+    expect(createUser.statusCode).toBe(302)
 });
 
 test('user creates account with invalid number', async () => {
     const newUser = Object.assign({}, defaultUser, {});
     newUser.phoneNumber = 'INVALID NUMBER';
-    const createUser = await request(baseURL).post('/api/createUser').send(newUser);
-    expect(createUser.statusCode).toBe(422)
+    const createUser = await request(baseURL).post('/register').send(newUser);
+    expect(createUser.statusCode).toBe(302)
 });
 
 test('user creates account w/o photo but email already in use', async () => {
@@ -47,9 +47,9 @@ test('user creates account w/o photo but email already in use', async () => {
         password: defaultPassword,
         phoneNumber: '0917 123 4567'
     }
-    const createUser1 = await request(baseURL).post('/api/createUser').send(newUser1);
+    const createUser1 = await request(baseURL).post('/register').send(newUser1);
     expect(createUser1.statusCode).toBe(302);
-    const createUser2 = await request(baseURL).post('/api/createUser').send(newUser2);
+    const createUser2 = await request(baseURL).post('/register').send(newUser2);
     expect(createUser2.statusCode).toBe(302);
 });
 

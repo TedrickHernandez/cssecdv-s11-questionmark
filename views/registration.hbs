@@ -3,7 +3,7 @@
 		<button type = "submit">OnlyFriends</button>
 	</form>
 	<h2>User Registration</h2>
-	<form action = "/register" method = "POST" enctype = "multipart/form-data">
+	<form action = "/register" method = "POST" enctype = "multipart/form-data" id="reg">
 		<div>
 			<label for = "firstName">First Name:</label>
 			<input type = "text" id = "fisrtName" name = "firstName" required>
@@ -30,9 +30,14 @@
 		</div>
 		<div>
 			<label for = "userJSON">User Data (JSON):</label>
-			<input type = "file" id = "userJSON" name = "userJSON" accept = ".json">
+			<input type = "file" id = "userJSON" name = "userJSON" accept = "application/json">
 		</div>
-		<button type = "submit">Register</button>
+
+		<!-- someone pls center this VVV -->
+		{{#if error}}
+		<span class="error" id="error">{{error}}</span>
+		{{/if}}
+		<button type = "submit" id="regbtn">Register</button>
 	</form>
 	<form action = "/login" method = "GET">
 		<button type = "submit">Already registered? Login.</button>

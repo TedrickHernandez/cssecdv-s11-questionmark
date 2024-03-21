@@ -42,6 +42,7 @@ CREATE TABLE cssecdb.`friends` (
 
 INSERT INTO cssecdb.`roles`(`email`,`isAdmin`) VALUES('standesu@email.com', 1);
 
+DROP USER IF EXISTS 'cssecdv'@'localhost';
 create user cssecdv@localhost identified by 'extremelySecurePassword';
 grant select, insert, update, delete on cssecdb.sessions to cssecdv@localhost;
 grant select, insert, update, delete on cssecdb.users to cssecdv@localhost;

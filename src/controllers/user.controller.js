@@ -258,6 +258,20 @@ const usersController = {
         });
         logger.info(`${res.locals.email} is now ${newNames.last_name}, ${newNames.first_name}`, {session: req.sessionID})
         res.redirect('/profile')
+    },
+    deleteUser: async (req, res) => {
+        logger.warn(`attempt to delete ${req.body.userId}`, {session:req.sessionID})
+        await User.destroy({
+            where: {
+                id: req.body.userId
+            }
+        }).then(res => {
+            logger.warn(`deleted ${req.body.userId}`, {session:req.sessionID})
+        }).catch(err => {
+            logger.error(err, {session:req.sessionID});
+            res.redirect('/admin');
+        });
+        res.redirect('/admin');
     }
 }
 

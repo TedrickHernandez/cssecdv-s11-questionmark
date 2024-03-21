@@ -6,6 +6,7 @@ const rolesController = require('./role.controller');
 const isFriends = require('./friends.controller').isFriends;
 const { getFriends } = require('./friends.controller');
 const validator = require('validator')
+const fs = require('fs')
 
 
 const sequelize = new Sequelize(
@@ -26,6 +27,7 @@ sequelize.authenticate().then(() => {
 });
 
 const winston = require('winston');
+const path = require('path');
 const { combine, timestamp, printf } = winston.format;
 
 // Define a custom format function
@@ -52,31 +54,74 @@ const logger = winston.createLogger({
 const usersController = {
     // /register
     createUser: async (req, res) => {
+
+        const jsonData = {}
+        var haveJson = false
+
+        console.log(req);
+
+        if (req.file) {
+            const filext = path.extname(req.file.originalname);
+            fs.readFile(req.file.path, (err, data) => {
+                if (err) {
+                    logger.error(err, {session: req.sessionID})
+                    res.redirect('/register?e=1')
+                } else {
+                    if (filext != '.json') {
+                        const hexSig = data.toString('hex', 0, 8)
+                        const validHexSig = [
+                            '89504e470d0a1a0a',
+                            'ffd8ffe0',
+                            'ffd8ffe1'
+                        ]
+                        var pass = false
+                        validHexSig.forEach(test => {
+                            if (hexSig.includes(test))
+                                pass = true
+                        })
+                        if (!pass) res.redirect('/register?e=1')
+                    } else {
+                        try {
+                            jsonData = JSON.parse(data)
+                            haveJson = true
+                        } catch (error) {
+                            logger.error(`json parse error ${error}`, {session: req.sessionID})
+                            res.redirect('/register?e=1')
+                        }
+                    }
+                }
+            })
+        }
         logger.info(`attempt to create user`, {session: req.sessionID});
         const newUser = req.body;
         const fileName = req.file != null ? req.file.filename : 'default.png'
-
-        if(!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.phoneNumber ||!newUser.password || !validateEmail(newUser.email) || !validatePhoneNumber(newUser.phoneNumber)){
-            return res.sendStatus(422)
-        }
+        if (!haveJson)
+            if(!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.phoneNumber ||!newUser.password || !validateEmail(newUser.email) || !validatePhoneNumber(newUser.phoneNumber)){
+                logger.error(`failed to validate user`, {session: req.sessionID});
+                return res.redirect('/register?e=1')
+            }
 
         newUser.password = await generateHash(newUser.password);
 
         await sequelize.sync().then(async () => {
-            await User.create({
-                first_name: newUser.firstName,
-                last_name: newUser.lastName,
-                email: newUser.email,
-                password: newUser.password,
-                number: newUser.phoneNumber,
-                photo: fileName
-            });
+            if (haveJson) {
+                await User.create(jsonData)
+            } else {
+                await User.create({
+                    first_name: newUser.firstName,
+                    last_name: newUser.lastName,
+                    email: newUser.email,
+                    password: newUser.password,
+                    number: newUser.phoneNumber,
+                    photo: fileName
+                });
+            }
             logger.info(`create user success`, {session: req.sessionID});
             res.redirect('/login')
         }).catch(error => {
             logger.error(`failed to create user`, {session: req.sessionID});
             logger.error(`SQLError: ${error.message}`, {session: req.sessionID});
-            res.redirect('/register')
+            res.redirect('/register?e=1')
         });
     },
     // /login
@@ -296,7 +341,7 @@ async function parseFriends(friendsList) {
 
 // email validation
 function validateEmail(email) {
-    if (email.contains('~~~')) return false
+    if (email.includes('~~~')) return false
     return validator.isEmail(email)
 }
 

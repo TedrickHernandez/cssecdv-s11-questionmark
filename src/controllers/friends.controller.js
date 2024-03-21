@@ -76,13 +76,13 @@ const friendsController = {
         const areFriends = friendsController.isFriends(res.locals.email, req.body.id);
         const friend = await require('./user.controller').emailFromId(req.body.id)
         if (areFriends) {
-            Friends.destroy({
+            await Friends.destroy({
                 where: {
                     user: res.locals.email,
                     friendsWith: friend
                 }
             });
-            Friends.destroy({
+            await Friends.destroy({
                 where: {
                     user: friend,
                     friendsWith: res.locals.email

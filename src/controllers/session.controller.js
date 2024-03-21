@@ -51,7 +51,7 @@ const sessionsController = {
             email: email,
             expiresOn: expiresOn
         }
-        Session.upsert(session)
+        await Session.upsert(session)
         .catch((error) => {
             logger.error(error);
         });

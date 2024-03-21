@@ -24,12 +24,10 @@ services:
       - key: NUM_ATTEMPS
         value: 10
     healthCheckPath: /health
-    regions:
-      - global
+    region: singapore
 
 databases:
   - name: db
     databaseName: cssecdb
     engine: mysql
-    region: global
-    version: 8.0
+    region: singapore

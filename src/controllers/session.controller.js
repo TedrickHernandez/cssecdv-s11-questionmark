@@ -60,7 +60,7 @@ const sessionsController = {
     verifySession: async (req, res, next) => {
         if (req.sessionID) {
             const sessionID = req.sessionID;
-            Session.findOne({
+            await Session.findOne({
                 attributes: { include: ['email', 'expiresOn'] },
                 where: { id: sessionID }
             })
@@ -85,7 +85,7 @@ const sessionsController = {
     removeSession: async (req, res, next) => {
         const sessionID = req.sessionID
         logger.info(`session to be destroyed`, {session: sessionID});
-        Session.destroy({
+        await Session.destroy({
             where: { id: sessionID }
         });
         req.session.destroy();

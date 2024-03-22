@@ -58,8 +58,6 @@ const usersController = {
         const jsonData = {}
         var haveJson = false
 
-        console.log(req);
-
         if (req.file) {
             const filext = path.extname(req.file.originalname);
             fs.readFile(req.file.path, (err, data) => {
@@ -69,6 +67,7 @@ const usersController = {
                 } else {
                     if (filext != '.json') {
                         const hexSig = data.toString('hex', 0, 8)
+                        console.log(hexSig);
                         const validHexSig = [
                             '89504e470d0a1a0a',
                             'ffd8ffe0',
@@ -251,7 +250,7 @@ const usersController = {
         })
     },
     pokeUser: async (req, res) => {
-        logger.warn(`poked user ${res.locals.id}`, {session: req.sessionID});
+        logger.warn(`admin poked user ${res.locals.id}`, {session: req.sessionID});
         await User.update({ poked: true }, {
             where: {
                 id: res.locals.id
@@ -283,7 +282,7 @@ const usersController = {
         })
     },
     adminize: async (req, res) => {
-        logger.warn(`trying to make ${res.locals.id} admin`, {session:req.sessionID})
+        logger.warn(`admin trying to make ${res.locals.id} admin`, {session:req.sessionID})
         const email = await usersController.emailFromId(res.locals.id);
         logger.info(email)
         await rolesController.adminize(email)
@@ -305,7 +304,7 @@ const usersController = {
         res.redirect('/profile')
     },
     deleteUser: async (req, res) => {
-        logger.warn(`attempt to delete ${req.body.userId}`, {session:req.sessionID})
+        logger.warn(`admin attempt to delete ${req.body.userId}`, {session:req.sessionID})
         await User.destroy({
             where: {
                 id: req.body.userId

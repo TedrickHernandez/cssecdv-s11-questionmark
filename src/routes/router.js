@@ -49,15 +49,7 @@ router.get('/settings', (req, res) => {
     res.sendFile(path.join(__dirname, '../../views', 'userSettings.html'));
 })
 
-router.post('/register', (req, res, next) => {
-    try {
-        multer.upload.single('profilePhoto')
-    } catch (e) {}
-    try {
-        multer.upload.single('userJSON')
-    } catch (e) {}
-    next()
-}, usersController.createUser)
+router.post('/register', multer.upload.single('profilePhoto'), usersController.createUser)
 
 // Logout Endpoint
 router.post('/logout', removeSession, (req, res) => {

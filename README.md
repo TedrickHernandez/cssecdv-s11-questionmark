@@ -23,10 +23,17 @@ RATE_LIMIT = 0 # timeout in minutes, can change
 NUM_ATTEMPS = 0 # can change
 
 # MySQL Credentials # set per deployment
-DB_SCHEMA =
-DB_USERNAME =
-DB_PASSWORD =
-DB_ADDRESS =
+PORT = 3000 # change if conflict
+
+# Rate Limiting
+RATE_LIMIT = 15 # timeout in minutes, can change
+NUM_ATTEMPS = 10 # can change
+
+# MySQL Credentials # set per deployment
+DB_SCHEMA = cssecdb
+DB_USERNAME = cssecdv
+DB_PASSWORD = extremelySecurePassword
+DB_ADDRESS = localhost
 
 ###
 NODE_TLS_REJECT_UNAUTHORIZED = 0
